@@ -1,0 +1,11 @@
+---
+title: "Project Proposal"
+output: html_notebook
+---
+
+## Section 1. Introduction
+
+## Section 2. Data Analysis Plan
+
+## Section 3. Data
+

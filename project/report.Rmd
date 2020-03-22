@@ -1,0 +1,11 @@
+---
+title: "Final Report for Intro to Data Science"
+output: html_notebook
+---
+
+This is where the final project report write-up goes. 
+
+
+Before you submit, make sure everything runs as expected.
+
+You can add sections as you see fit. Make sure you have a section called "Introduction" at the beginning and a section called "Conclusion" at the end. The rest is up to you!
