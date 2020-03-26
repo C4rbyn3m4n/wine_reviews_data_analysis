@@ -4,13 +4,13 @@
 
 Team members: 
 
-- Student 1 [Rei](mailto:rsanchezarias@floridapoly.edu)
+- Saivamsi Hanumanthu [Vamso the Extraordinaire](mailto:shanumanthu4016@floridapoly.edu)
 
-- Student 2 [Student 2](mailto:student2@floridapoly.edu)
+- Isabel Zimmerman [Z Best](mailto:izimmerman5298@floridapoly.edu)
 
-- Student 3 [Student 3](mailto:student3@floridapoly.edu)
+- Osaki Pokima [Saki-Saki](mailto:student3@floridapoly.edu)
 
 
 Our project investigates the main characteristics of popular movies in recent years.
 We will be using the data available at: 
-<https://github.com/reisanar/datasets/blob/master/IMDB_movies.csv> 
+TBA
