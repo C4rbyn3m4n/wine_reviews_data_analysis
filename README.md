@@ -11,5 +11,5 @@ Team members:
 - Osaki Pokima [Saki-Saki](mailto:student3@floridapoly.edu)
 
 
-Our project investigates the main characteristics of popular movies in recent years.
+Our project investigates 130,000 wine reviews with characteristics such as variety, location, winery, price, and description.
 We will be using the data available at: https://www.kaggle.com/zynicide/wine-reviews
