@@ -12,5 +12,4 @@ Team members:
 
 
 Our project investigates the main characteristics of popular movies in recent years.
-We will be using the data available at: 
-TBA
+We will be using the data available at: https://www.kaggle.com/zynicide/wine-reviews
