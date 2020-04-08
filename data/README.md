@@ -5,7 +5,7 @@ We use the `winemag-data-130k-v2.csv` dataset available at
 
 This dataset includes information of of 130,000 wine reviews. 
 
-The data fields included are: 
+The 10 data fields included are: 
 
 | Field                 | Description                                                                                                                                                  |
 |-----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -24,3 +24,4 @@ The data fields included are:
 | winery                | The winery that made the wine                                                                                                                                |
 
 Below we include some basic statistics for this datasets, including dimensions and range of years:
+- 130,000 records with 10 data fields 
