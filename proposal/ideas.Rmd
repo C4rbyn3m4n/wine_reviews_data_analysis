@@ -32,7 +32,7 @@ Libraries used:
 
 Extra Ideas
 -determine traits of reviews based on tweet (ex: all like basketball)
--determine best wine given user taste profile (not sure how to do this yet)x
+-determine best wine given user taste profile (not sure how to do this yet)
 
 ## Section 3. Data
 
