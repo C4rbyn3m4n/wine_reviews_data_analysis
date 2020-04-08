@@ -52,5 +52,41 @@ Libraries used:
 
 * Determine best wine given user taste profile (not sure how to do this yet)
 
-## Section 3. Data
 
+## Section 3. Data
+The data set is from [kaggle](https://www.kaggle.com/zynicide/wine-reviews). It contains 130,000 reviews of wines from the website [WineEnthusiast](https://www.wineenthusiast.com/).
+
+The character attributes are:
+
+* country: country where the wine is from
+
+* description: description of wine
+
+* designation: vineyard where the grapes were grown
+  - 29% null
+  
+* province: Province or state where wine is from
+
+* region_1: Growing area of grapes (i.e. Napa Valley)
+  - 16% null
+  
+* region_2: If there are more specific places within region_1 (i.e. Rutherford within Napa Valley)
+  - 61% null
+  
+* taster_name: Reviewer's name
+  - 20% null
+  
+* taster_twitter_handle: Reviewer's twitter handle
+  - 24% null
+  
+* title: Title of wine review
+
+* variety: type of grapes used
+
+* winery: winery that made wine
+
+The numeric attributes are:
+
+* price: wine price, per bottle
+
+* points: number of points on a scale of 1-100
