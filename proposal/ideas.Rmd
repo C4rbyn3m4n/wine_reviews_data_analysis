@@ -8,31 +8,49 @@ Our team decided to go with the Wine Reviews dataset on Kaggle. This dataset was
 
 ## Section 2. Data Analysis Plan
 Exploratory Questions:
+
 1. What is the best wine? Normalize data based on each user?
+
 2. Best bang for buck wine based on rating?
+
 3. Best wine is the best variety, best wine province, number of wines per province
+
 4. Based on user twitter handle determine location of reviewers
+
 5. Point distribution
+
 6. Most/Least expensive wine
 
 Our intent is to use the following functions:
--join()
--groupBy()
--n()
--mean()
--max()/min()
--summarize()
--filter()
+
+* join()
+
+* groupBy()
+
+* n()
+
+* mean()
+
+* max()/min()
+
+* summarize()
+
+* filter()
 
 Libraries used:
--ggplot
--rtweet
--tidyvers
+
+* ggplot
+
+* rtweet
+
+* tidyverse
 
 
-Extra Ideas
--determine traits of reviews based on tweet (ex: all like basketball)
--determine best wine given user taste profile (not sure how to do this yet)
+### Extra Ideas
+
+* Determine traits of reviews based on tweet (ex: all like basketball)
+
+* Determine best wine given user taste profile (not sure how to do this yet)
 
 ## Section 3. Data
 

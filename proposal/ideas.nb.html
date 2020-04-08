@@ -1755,17 +1755,45 @@ summary {
 </div>
 <div id="section-2.-data-analysis-plan" class="section level2">
 <h2>Section 2. Data Analysis Plan</h2>
-<p>Exploratory Questions: 1. What is the best wine? Normalize data based on each user? 2. Best bang for buck wine based on rating? 3. Best wine is the best variety, best wine province, number of wines per province 4. Based on user twitter handle determine location of reviewers 5. Point distribution 6. Most/Least expensive wine</p>
-<p>Our intent is to use the following functions: -join() -groupBy() -n() -mean() -max()/min() -summarize() -filter()</p>
-<p>Libraries used: -ggplot -rtweet -tidyvers</p>
-<p>Extra Ideas -determine traits of reviews based on tweet (ex: all like basketball) -determine best wine given user taste profile (not sure how to do this yet)</p>
+<p>Exploratory Questions:</p>
+<ol style="list-style-type: decimal">
+<li><p>What is the best wine? Normalize data based on each user?</p></li>
+<li><p>Best bang for buck wine based on rating?</p></li>
+<li><p>Best wine is the best variety, best wine province, number of wines per province</p></li>
+<li><p>Based on user twitter handle determine location of reviewers</p></li>
+<li><p>Point distribution</p></li>
+<li><p>Most/Least expensive wine</p></li>
+</ol>
+<p>Our intent is to use the following functions:</p>
+<ul>
+<li><p>join()</p></li>
+<li><p>groupBy()</p></li>
+<li><p>n()</p></li>
+<li><p>mean()</p></li>
+<li><p>max()/min()</p></li>
+<li><p>summarize()</p></li>
+<li><p>filter()</p></li>
+</ul>
+<p>Libraries used:</p>
+<ul>
+<li><p>ggplot</p></li>
+<li><p>rtweet</p></li>
+<li><p>tidyverse</p></li>
+</ul>
+<div id="extra-ideas" class="section level3">
+<h3>Extra Ideas</h3>
+<ul>
+<li><p>Determine traits of reviews based on tweet (ex: all like basketball)</p></li>
+<li><p>Determine best wine given user taste profile (not sure how to do this yet)</p></li>
+</ul>
+</div>
 </div>
 <div id="section-3.-data" class="section level2">
 <h2>Section 3. Data</h2>
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlByb2plY3QgUHJvcG9zYWwiDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQojIyBTZWN0aW9uIDEuIEludHJvZHVjdGlvbg0KT3VyIHRlYW0gZGVjaWRlZCB0byBnbyB3aXRoIHRoZSBXaW5lIFJldmlld3MgZGF0YXNldCBvbiBLYWdnbGUuIFRoaXMgZGF0YXNldCB3YXMgaW5zcGlyZWQgYWZ0ZXIgdGhlIGNyZWF0b3Igd2F0Y2hlZCBhIGRvY3VtZW50YXJ5IG9uIG1hc3RlciB3aW5lIHN0ZXdhcmRzIChhIHBlcnNvbiBhdCBhbiBleHBlbnNpdmUgcmVzdGF1cmFudCB3aG8ga2VlcHMgdGhlIHdpbmUgY2VsbGFyIGFuZCBhZHZpc2VzIGd1ZXN0cyBvbiBjaG9pY2VzIG9mIHdpbmUpLiBXZSBwbGFuIHRvIHVzZSB0aGlzIGRhdGEgdG8gcGVyZm9ybSBhbiBleHBsb3JhdG9yeSBkYXRhIGFuYWx5c2lzLg0KDQojIyBTZWN0aW9uIDIuIERhdGEgQW5hbHlzaXMgUGxhbg0KRXhwbG9yYXRvcnkgUXVlc3Rpb25zOg0KMS4gV2hhdCBpcyB0aGUgYmVzdCB3aW5lPyBOb3JtYWxpemUgZGF0YSBiYXNlZCBvbiBlYWNoIHVzZXI/DQoyLiBCZXN0IGJhbmcgZm9yIGJ1Y2sgd2luZSBiYXNlZCBvbiByYXRpbmc/DQozLiBCZXN0IHdpbmUgaXMgdGhlIGJlc3QgdmFyaWV0eSwgYmVzdCB3aW5lIHByb3ZpbmNlLCBudW1iZXIgb2Ygd2luZXMgcGVyIHByb3ZpbmNlDQo0LiBCYXNlZCBvbiB1c2VyIHR3aXR0ZXIgaGFuZGxlIGRldGVybWluZSBsb2NhdGlvbiBvZiByZXZpZXdlcnMNCjUuIFBvaW50IGRpc3RyaWJ1dGlvbg0KNi4gTW9zdC9MZWFzdCBleHBlbnNpdmUgd2luZQ0KDQpPdXIgaW50ZW50IGlzIHRvIHVzZSB0aGUgZm9sbG93aW5nIGZ1bmN0aW9uczoNCi1qb2luKCkNCi1ncm91cEJ5KCkNCi1uKCkNCi1tZWFuKCkNCi1tYXgoKS9taW4oKQ0KLXN1bW1hcml6ZSgpDQotZmlsdGVyKCkNCg0KTGlicmFyaWVzIHVzZWQ6DQotZ2dwbG90DQotcnR3ZWV0DQotdGlkeXZlcnMNCg0KDQpFeHRyYSBJZGVhcw0KLWRldGVybWluZSB0cmFpdHMgb2YgcmV2aWV3cyBiYXNlZCBvbiB0d2VldCAoZXg6IGFsbCBsaWtlIGJhc2tldGJhbGwpDQotZGV0ZXJtaW5lIGJlc3Qgd2luZSBnaXZlbiB1c2VyIHRhc3RlIHByb2ZpbGUgKG5vdCBzdXJlIGhvdyB0byBkbyB0aGlzIHlldCkNCg0KIyMgU2VjdGlvbiAzLiBEYXRhDQoNCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlByb2plY3QgUHJvcG9zYWwiDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQojIyBTZWN0aW9uIDEuIEludHJvZHVjdGlvbg0KT3VyIHRlYW0gZGVjaWRlZCB0byBnbyB3aXRoIHRoZSBXaW5lIFJldmlld3MgZGF0YXNldCBvbiBLYWdnbGUuIFRoaXMgZGF0YXNldCB3YXMgaW5zcGlyZWQgYWZ0ZXIgdGhlIGNyZWF0b3Igd2F0Y2hlZCBhIGRvY3VtZW50YXJ5IG9uIG1hc3RlciB3aW5lIHN0ZXdhcmRzIChhIHBlcnNvbiBhdCBhbiBleHBlbnNpdmUgcmVzdGF1cmFudCB3aG8ga2VlcHMgdGhlIHdpbmUgY2VsbGFyIGFuZCBhZHZpc2VzIGd1ZXN0cyBvbiBjaG9pY2VzIG9mIHdpbmUpLiBXZSBwbGFuIHRvIHVzZSB0aGlzIGRhdGEgdG8gcGVyZm9ybSBhbiBleHBsb3JhdG9yeSBkYXRhIGFuYWx5c2lzLg0KDQojIyBTZWN0aW9uIDIuIERhdGEgQW5hbHlzaXMgUGxhbg0KRXhwbG9yYXRvcnkgUXVlc3Rpb25zOg0KDQoxLiBXaGF0IGlzIHRoZSBiZXN0IHdpbmU/IE5vcm1hbGl6ZSBkYXRhIGJhc2VkIG9uIGVhY2ggdXNlcj8NCg0KMi4gQmVzdCBiYW5nIGZvciBidWNrIHdpbmUgYmFzZWQgb24gcmF0aW5nPw0KDQozLiBCZXN0IHdpbmUgaXMgdGhlIGJlc3QgdmFyaWV0eSwgYmVzdCB3aW5lIHByb3ZpbmNlLCBudW1iZXIgb2Ygd2luZXMgcGVyIHByb3ZpbmNlDQoNCjQuIEJhc2VkIG9uIHVzZXIgdHdpdHRlciBoYW5kbGUgZGV0ZXJtaW5lIGxvY2F0aW9uIG9mIHJldmlld2Vycw0KDQo1LiBQb2ludCBkaXN0cmlidXRpb24NCg0KNi4gTW9zdC9MZWFzdCBleHBlbnNpdmUgd2luZQ0KDQpPdXIgaW50ZW50IGlzIHRvIHVzZSB0aGUgZm9sbG93aW5nIGZ1bmN0aW9uczoNCg0KKiBqb2luKCkNCg0KKiBncm91cEJ5KCkNCg0KKiBuKCkNCg0KKiBtZWFuKCkNCg0KKiBtYXgoKS9taW4oKQ0KDQoqIHN1bW1hcml6ZSgpDQoNCiogZmlsdGVyKCkNCg0KTGlicmFyaWVzIHVzZWQ6DQoNCiogZ2dwbG90DQoNCiogcnR3ZWV0DQoNCiogdGlkeXZlcnNlDQoNCg0KIyMjIEV4dHJhIElkZWFzDQoNCiogRGV0ZXJtaW5lIHRyYWl0cyBvZiByZXZpZXdzIGJhc2VkIG9uIHR3ZWV0IChleDogYWxsIGxpa2UgYmFza2V0YmFsbCkNCg0KKiBEZXRlcm1pbmUgYmVzdCB3aW5lIGdpdmVuIHVzZXIgdGFzdGUgcHJvZmlsZSAobm90IHN1cmUgaG93IHRvIGRvIHRoaXMgeWV0KQ0KDQojIyBTZWN0aW9uIDMuIERhdGENCg0K</div>
 
 
 
