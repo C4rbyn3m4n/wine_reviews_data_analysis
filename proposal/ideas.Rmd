@@ -7,6 +7,32 @@ output: html_notebook
 Our team decided to go with the Wine Reviews dataset on Kaggle. This dataset was inspired after the creator watched a documentary on master wine stewards (a person at an expensive restaurant who keeps the wine cellar and advises guests on choices of wine). We plan to use this data to perform an exploratory data analysis.
 
 ## Section 2. Data Analysis Plan
+Exploratory Questions:
+1. What is the best wine? Normalize data based on each user?
+2. Best bang for buck wine based on rating?
+3. Best wine is the best variety, best wine province, number of wines per province
+4. Based on user twitter handle determine location of reviewers
+5. Point distribution
+6. Most/Least expensive wine
+
+Our intent is to use the following functions:
+-join()
+-groupBy()
+-n()
+-mean()
+-max()/min()
+-summarize()
+-filter()
+
+Libraries used:
+-ggplot
+-rtweet
+-tidyvers
+
+
+Extra Ideas
+-determine traits of reviews based on tweet (ex: all like basketball)
+-determine best wine given user taste profile (not sure how to do this yet)x
 
 ## Section 3. Data
 
