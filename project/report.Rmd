@@ -34,6 +34,29 @@ set.seed(19630217)
 wine_sample<- sample_n(wines, 1000)
 ```
 
+EDA (correlation priceXpoints, with ```DataExplorer``` library? using (this)[https://datascienceplus.com/blazing-fast-eda-in-r-with-dataexplorer/])
+```{r}
+wines %>% 
+  ggplot() +
+    geom_point(mapping = (aes(x = points, y = price)), na.rm = T)
+```
+
+```{r}
+wines %>%
+    summarize(mean(price, na.rm=TRUE), 
+              min(price, na.rm=TRUE),
+              max(price,na.rm=TRUE), 
+              sd(price, na.rm=TRUE))
+```
+
+```{r}
+wines %>%
+    summarize(mean(points, na.rm=TRUE), 
+              min(points, na.rm=TRUE),
+              max(points,na.rm=TRUE), 
+              sd(points, na.rm=TRUE))
+```
+
 Select the provinces based on points  and Select the best province for wine based on the average points of the sample size. 
 
 #find the average number of points across the 1,000 samples
@@ -46,6 +69,7 @@ wine_per_province
 
 
 #Find the best province for wine using the average points across the 1,000 samples
+#drop the descriptions or just select price? set points to max(points)
 ```{r}
 best_province <- wine_sample %>% 
   group_by(province, points) %>% 
@@ -60,8 +84,25 @@ Rating distribution
 
 ```
 
+Best wine, by variety
+```{r}
+#wine_best_variety <- 
+wines %>% 
+  group_by(variety) %>% 
+  summarise(mean_points = mean(points)) %>% 
+  arrange(desc(mean_points)) 
+  
+```
 
+```{r}
+user_price <- readline(prompt = "How much are you willing to spend on a bottle?")
+user_price <- as.integer(user_price)
 
+wines %>% 
+  filter(price <= user_price) %>% 
+  arrange(desc(points)) %>% 
+  select(title, price, points)
+```
 
 
 
