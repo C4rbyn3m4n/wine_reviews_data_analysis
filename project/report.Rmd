@@ -2,10 +2,67 @@
 title: "Final Report for Intro to Data Science"
 output: html_notebook
 ---
-
 This is where the final project report write-up goes. 
-
 
 Before you submit, make sure everything runs as expected.
 
 You can add sections as you see fit. Make sure you have a section called "Introduction" at the beginning and a section called "Conclusion" at the end. The rest is up to you!
+
+
+
+##Introduction
+- Load the `tidyverse, ggplot, and rtweet` packages
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(rtweet)
+library(readr)
+```
+
+
+This data set was scraped from WineEnthusiast, a website that reviews and rates many differet types of wines.  
+
+- This dataset includes information of of 130,000 wine reviews with 10 different data fields. 
+  
+
+```{r}
+wines <- read.csv(file = '../data/winemag-data-130k-v2.csv')[,-1]
+```
+
+```{r}
+set.seed(19630217)
+wine_sample<- sample_n(wines, 1000)
+```
+
+Select the provinces based on points  and Select the best province for wine based on the average points of the sample size. 
+
+#find the average number of points across the 1,000 samples
+```{r}
+wine_per_province <- wine_sample %>% 
+  select(province, points) %>% 
+  summarise(points = mean(points))
+wine_per_province
+```
+
+
+#Find the best province for wine using the average points across the 1,000 samples
+```{r}
+best_province <- wine_sample %>% 
+  group_by(province, points) %>% 
+  filter(points > 88.669)
+best_province  
+```
+
+
+Rating distribution
+
+```{r}
+
+```
+
+
+
+
+
+
+##Conclusion
