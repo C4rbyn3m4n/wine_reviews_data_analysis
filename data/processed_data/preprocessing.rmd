@@ -1,17 +1,25 @@
 ---
-title: "Preprcessing"
+title: "Preprcessing Data"
 output: html_notebook
 ---
-Import Libraries
+# Prerequisites
+
+Import required libraries
 ```{r}
 library("tidyverse")
 library("dplyr")
 ```
 
-Read dataset_1 - Note: Removed first column for ID values
+# Data Wrangling
+
+## Read dataset_1
+
 ```{r}
+# read data and drop ID col
 dataset_1 <- read.csv("../raw_data/dataset_1/winemag-data-130k-v2.csv")[-1]
 ```
+
+## Read dataset_2
 
 Combine all the csv files for dataset_2
 ```{r}
@@ -33,46 +41,59 @@ combine_data = function(mypath){
   return(Reduce(f = function(x,y) merge_dataframes(x,y), x = datalist, accumulate = FALSE))
 }
 
+# merge csv data given dataset folder
 dataset_2 <- combine_data("../raw_data/dataset_2")
 ```
 
-Join datasets by `title`,  `description`, `price`, `country`, `points` = `rating`
+## Join Datasets
+
+Join datasets by `title`,  `description`, `price`, `country`, `points` = `rating`. We choose to join by these characteristics, because it would allow us to safely assume that the wine reviews being merged are the same. However, we intentionally left choose not to join based on certain chacteristics like `province` = `region`, because there were some input errors in the data. For example, in `dataset_1` the `province` was "Sicily & Sardinia" where as in `dataset_2` the  `region` was "Sicily &amp; Sardinia".
 ```{r}
-join_wines <- inner_join(dataset_1, dataset_2, by = c("title", "description", "points" = "rating", "price", "country"))
+join_wines <- inner_join(dataset_1, dataset_2, by = c("title", "description", "price", "country", "points" = "rating"))
 ```
 
-Visualize Joined data
+Visualize joined data
 ```{r}
 head(join_wines)
-```
-
-Output uncleaned joined data for others to use
-```{r}
-write_csv(join_wines, "joined_datasets.csv")
 ```
 
 Clean joined data to remove redundancies
 ```{r}
 join_wines_cleaned <- join_wines %>%
   select(country, description, designation=designation.x, points, price, province, region=region_1, subregion=region_2, taster_name, taster_twitter_handle, title, variety, winery=winery.x, alcohol, category, url, vintage)
+
 head(join_wines_cleaned)
 ```
+
+
+Extract relevant information for our use
+```{r}
+wines <- join_wines_cleaned %>%
+  select(title, alcohol, category, vintage, designation, country, province, region, subregion,  variety, winery, price, points, taster_name, taster_twitter_handle)
+
+head(wines)
+```
+
+
+# Write to CSV
+
+### Joined uncleaned Data
+
+Output uncleaned joined data for others to use
+```{r}
+write_csv(join_wines, "joined_datasets.csv")
+```
+
+### Joined Cleaned Data
 
 Outout cleaned joined data for others to use
 ```{r}
 write_csv(join_wines_cleaned, "joined_datasets_cleaned.csv")
 ```
 
-Extract relevant information for our use
-```{r}
-wines <- join_wines_cleaned %>%
-  select(title, alcohol, category, vintage, designation, country, province, region, subregion,  variety, winery, price, points, taster_name, taster_twitter_handle)
-```
+### Joined Cleaned Data with relevant categories
 
 Output for easy import later
 ```{r}
 write_csv(wines, "wines.csv")
 ```
-
-
-
