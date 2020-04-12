@@ -5,7 +5,7 @@
 Our project investigates 130,000 wine reviews with characteristics such as variety, location, winery, price, and description.
 We will be using the data available at: https://www.kaggle.com/zynicide/wine-reviews
 
-Team members: 
+## Team members
 
 ![Vamso](https://avatars3.githubusercontent.com/u/21210971?s=460&u=65bef4ce837966aeceb3fa6d9abbaef16a3a1642&v=4)
 
