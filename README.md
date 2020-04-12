@@ -5,7 +5,7 @@ Our project investigates ~120,000 wine reviews with characteristics such as vari
 ### Datasets
 The data we used is available at: https://github.com/C4rbyn3m4n/wine_reviews_data_analysis/tree/master/data
 
-### Reports
+### Report
 Our final report is available at: https://github.com/C4rbyn3m4n/wine_reviews_data_analysis/tree/master/project
 
 ## Motivation
