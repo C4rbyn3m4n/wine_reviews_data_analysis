@@ -1,0 +1,74 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Cmd+Shift+Enter*. 
+```{r}
+library("tidyverse")
+library("dplyr")
+```
+
+```{r}
+
+readfile <- function(filename){
+  cat("Reading file: ", filename, "...\n", sep = '' )
+  return(read.csv(file = filename, header = TRUE))
+}
+
+merge_dataframes <- function(dataframe_1, dataframe_2){
+  return(rbind(dataframe_1, dataframe_2))
+}
+
+combine_data = function(mypath){
+  filenames=list.files(path=mypath, full.names=TRUE)
+  datalist = lapply(filenames, function(x) readfile(x))
+  return(Reduce(f = function(x,y) merge_dataframes(x,y), x = datalist, accumulate = FALSE))
+}
+
+data <- combine_data("raw_data/dataset_2")
+```
+```{r}
+dataset_1 <- read.csv("raw_data/dataset_1/winemag-data-130k-v2.csv")[-1]
+```
+
+```{r}
+teemp <- inner_join(dataset_1, data, by = c("title", "description", "points" = "rating", "price", "country"))
+join_wines <- inner_join(dataset_1, data, by = c("title", "description", "points" = "rating", "price", "country"))
+```
+
+```{r}
+head(join_wines)
+```
+
+```{r}
+write_csv(join_wines, "joined_datasets.csv")
+```
+
+```{r}
+join_wines_cleaned <- join_wines %>%
+  select(country, description, designation=designation.x, points, price, province, region=region_1, subregion=region_2, taster_name, taster_twitter_handle, title, variety, winery=winery.x, alcohol, category, url, vintage)
+head(join_wines_cleaned)
+```
+
+```{r}
+write_csv(join_wines_cleaned, "joined_datasets_cleaned.csv")
+```
+
+```{r}
+wines <- join_wines_cleaned %>%
+  select(title, alcohol, category, vintage, designation, country, province, region, subregion,  variety, winery, price, points, taster_name, taster_twitter_handle)
+```
+
+```{r}
+write_csv(wines, "wines.csv")
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Cmd+Shift+K* to preview the HTML file). 
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
