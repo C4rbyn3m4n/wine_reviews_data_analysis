@@ -1,16 +1,10 @@
 ---
-title: "Final Report for Intro to Data Science"
+title: "Exploring and Analyizing Wine Enthusiast Reviews"
 output: html_notebook
 ---
-This is where the final project report write-up goes. 
 
-Before you submit, make sure everything runs as expected.
+## Introduction
 
-You can add sections as you see fit. Make sure you have a section called "Introduction" at the beginning and a section called "Conclusion" at the end. The rest is up to you!
-
-
-
-##Introduction
 - Load the `tidyverse, ggplot, and rtweet` packages
 ```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
@@ -26,12 +20,17 @@ This data set was scraped from WineEnthusiast, a website that reviews and rates 
   
 
 ```{r}
+#read preprocessed data
 wines <- read.csv(file = '../data/processed_data/wines.csv')
 ```
 
 ```{r}
+#set seed value to birthday of Ricardo Rodriguez, American wrestler and ring announcer
 set.seed(19630217)
-wine_sample<- sample_n(wines, 1000)
+
+#set percentage to test with for simplicity
+percentage <- 10
+wine_sample<- sample_n(wines, percentage/100*nrow(wines))
 ```
 
 EDA (correlation priceXpoints, with ```DataExplorer``` library? using (this)[https://datascienceplus.com/blazing-fast-eda-in-r-with-dataexplorer/])
@@ -43,25 +42,25 @@ wines %>%
 
 ```{r}
 wines %>%
-    summarize(mean(price, na.rm=TRUE), 
-              min(price, na.rm=TRUE),
-              max(price,na.rm=TRUE), 
-              sd(price, na.rm=TRUE))
+    summarize(avg_price = mean(price, na.rm=TRUE), 
+              sd_price = sd(price, na.rm=TRUE),
+              lowest_price = min(price, na.rm=TRUE),
+              highest_price = max(price,na.rm=TRUE))
 ```
 
 ```{r}
 wines %>%
-    summarize(mean(points, na.rm=TRUE), 
-              min(points, na.rm=TRUE),
-              max(points,na.rm=TRUE), 
-              sd(points, na.rm=TRUE))
+    summarize(avg_points = mean(points, na.rm=TRUE), 
+              sd_points = sd(points, na.rm=TRUE),
+              lowest_points = min(points, na.rm=TRUE),
+              highest_points = max(points,na.rm=TRUE))
 ```
 
 Select the provinces based on points  and Select the best province for wine based on the average points of the sample size. 
 
 #find the average number of points across the 1,000 samples
 ```{r}
-wine_per_province <- wine_sample %>% 
+wine_per_province <- wine %>% 
   select(province, points) %>% 
   summarise(points = mean(points))
 wine_per_province
@@ -103,7 +102,6 @@ wines %>%
   arrange(desc(points)) %>% 
   select(title, price, points)
 ```
-
 
 
 ##Conclusion
