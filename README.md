@@ -8,7 +8,7 @@ We will be using the data available at: https://www.kaggle.com/zynicide/wine-rev
 ## Team members
 
 
-<table style="width:100%" align = "center">
+<table style="width:100%" align = "center" rules = none>
   <tr>
       <td>
         <img src="https://avatars3.githubusercontent.com/u/21210971?s=460&u=65bef4ce837966aeceb3fa6d9abbaef16a3a1642&v=4" alt="Vamsi" width="200"/>
