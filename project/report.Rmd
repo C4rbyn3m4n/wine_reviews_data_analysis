@@ -12,6 +12,7 @@ library(dplyr)
 library(ggplot2)
 library(rtweet)
 library(readr)
+library(DataExplorer)
 ```
 
 # Dataset
@@ -57,7 +58,8 @@ taster_rating_profile <- wines %>%
   summarize(
     avg_points = mean(points),
     sd_points = sd(points),
-    var_points = var(points)
+    var_points = var(points),
+    reviews = n()
   )
 
 tasters <- inner_join(tasters, taster_rating_profile, by = "taster_name")
@@ -110,18 +112,24 @@ head(wines)
 Since, each reviewer has a different bias we created a normalized metric, `norm_points`, by looking at the number of standard deviatioins a wine is from the reviewer's `avg_points`. This gives use a more accurate representation of which which wines are better than the rest.
 
 ```{r}
-normalize_points <- function(points, name){
-  t <- tasters %>%
-    filter(taster_name == name)
-  nrow(t)
-  #return((points-t$avg_points)/t$sd_points)
+normalize_points <- function(data){
+  left_join(data, tasters, by = "taster_name")%>%
+    rowwise() %>%
+    mutate(norm_points = (points-avg_points)/sd_points) %>%
+    select(-avg_points, -sd_points, -var_points, -taster_twitter_handle, -reviews)
 }
 
-wine_sample %>%
-  rowwise() %>%
-  mutate(norm_points = normalize_points(points, taster_name))
+wines <- normalize_points(wines)
+head(wines) 
 ```
 
+## Data Sanitation
+
+Vintage seems to have year 7200
+``` {r}
+wines <- wines %>%
+  filter(vintage<2019)
+```
 # Data Exploration
 
 ## Univariate Exploration
@@ -130,6 +138,42 @@ Correlation `price` by `points`, using ```DataExplorer``` library which can be f
 # TODO: IZZY
 ```
 
+### Alcohol Amount
+```{r}
+# TODO: IZZY
+```
+
+### Category
+```{r}
+# TODO: IZZY
+```
+
+### Vintage
+Count wines per year (Note: Data has been sanitized)
+```{r}
+wines %>%
+  group_by(vintage) %>%
+  summarize(count = n())
+```
+
+
+```{r}
+wines %>%
+  ggplot() +
+  geom_bar(mapping = aes(x=vintage))
+```
+
+### Winery
+```{r}
+# TODO: Osaki
+```
+
+### Province
+```{r}
+# TODO: OSAKI
+```
+
+### Price
 ```{r}
 # TODO: OASKI (This is not producing correct results)
 wines %>%
@@ -139,6 +183,7 @@ wines %>%
               highest_price = max(price,na.rm=TRUE))
 ```
 
+### Points
 ```{r}
 # TODO: OASKI (This is not producing correct results)
 wines %>%
@@ -147,6 +192,16 @@ wines %>%
               lowest_points = min(points, na.rm=TRUE),
               highest_points = max(points,na.rm=TRUE))
 ```
+
+Points distribution by Reviewer
+```{r}
+wines %>%
+  ggplot() +
+  geom_boxplot(aes(y=taster_name, x=points)) +
+  geom_vline(xintercept = mean(wines$points))
+```
+
+## Multivariate Exploration
 
 ## Price by Points
 Notice the data is "stacked" and the socres range from 80-100
@@ -177,12 +232,6 @@ best_province <- wine_sample %>%
 best_province  
 ```
 
-
-Rating distribution
-
-```{r}
-
-```
 
 Best wine, by variety
 ```{r}
