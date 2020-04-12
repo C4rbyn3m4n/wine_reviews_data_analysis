@@ -48,6 +48,49 @@ wines <- wines %>%
 head(wines)
 ```
 
+### Add Rating Classification
+
+Add following classification to wine dataset as found on the [website](https://www.winemag.com/2010/04/09/you-asked-how-is-a-wines-score-determined/):
+
+|Category  | Rating  | Description                                            |
+|----------|---------|--------------------------------------------------------|
+|Classic   |	98-100 | The pinnacle of quality.                               |
+|Superb    |	94-97	 | A great achievement.                                   |
+|Excellent |	90-93	 | Highly recommended.                                    |
+|Very Good |  87-89	 | Often good value; well recommended.                    |
+|Good	     |  83-86	 | Suitable for everyday consumption; often good value.   |
+|Acceptable|	80-82	 | Can be employed in casual, less-critical circumstances |
+
+```{r}
+# function to add rating
+rating_category <- function(points){
+  if(points>=98){
+    return("Classic")
+  }
+  else if (points>=94){
+    return("Superb")
+  }
+  else if(points>=90){
+    return("Excellent")
+  }
+  else if(points>=87){
+    return("Very Good")
+  }
+  else if(points>=83){
+    return("Good")
+  }
+  else{
+    return("Acceptable")
+  }
+}
+
+wines<- wines %>%
+  rowwise() %>%
+  mutate(rating_category = rating_category(points))
+head(wines)
+```
+
+# Explore the Data
 
 EDA (correlation priceXpoints, with ```DataExplorer``` library? using (this)[https://datascienceplus.com/blazing-fast-eda-in-r-with-dataexplorer/])
 ```{r}
