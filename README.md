@@ -1,9 +1,12 @@
 # Exploring and Analyzing Wine Enthusiast Reviews
 
-## Final Project for Intro to Data Science (Spring 2020)
+Our project investigates ~120,000 wine reviews with characteristics such as variety, vintage, winery, price, and etc.
 
-Our project investigates 130,000 wine reviews with characteristics such as variety, location, winery, price, and description.
-We will be using the data available at: https://www.kaggle.com/zynicide/wine-reviews
+### Datasets
+The data we used is available at: https://github.com/C4rbyn3m4n/wine_reviews_data_analysis/tree/master/data
+
+## Motivation
+This is our Final Project for Intro to Data Science (Spring 2020) and we thought it was a bit too easy so we decided to expand it and take it a step further.
 
 ## Team members
 |<img src="https://avatars3.githubusercontent.com/u/21210971?s=460&u=65bef4ce837966aeceb3fa6d9abbaef16a3a1642&v=4" alt="Vamsi" width="200"/>  | Saivamsi Hanumanthu <br> [Vamso the Extraordinaire](mailto:shanumanthu4016@floridapoly.edu)
