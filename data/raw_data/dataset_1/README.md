@@ -22,6 +22,3 @@ The 10 data fields included are:
 | title                 | The title of the wine review, which often contains the vintage if you're interested in extracting that feature                                               |
 | variety               | The type of grapes used to make the wine (ie Pinot Noir)                                                                                                     |
 | winery                | The winery that made the wine                                                                                                                                |
-
-Below we include some basic statistics for this datasets, including dimensions and range of years:
-- 130,000 records with 10 data fields 
