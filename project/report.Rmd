@@ -8,6 +8,7 @@ output: html_notebook
 Load required packages
 ```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
+library(dplyr)
 library(ggplot2)
 library(rtweet)
 library(readr)
@@ -27,7 +28,7 @@ Get sample of dataset
 #set seed value to birthday of Ricardo Rodriguez, American wrestler and ring announcer and Dr. Reinaldo (Rei) Sanchez-Arias
 set.seed(19630217)
 
-#set percentage to test with for simplicity
+#set percentage to test with for simplicity, if needed
 percentage <- 5
 wine_sample<- sample_n(wines, percentage/100*nrow(wines))
 ```
@@ -47,7 +48,21 @@ wines <- wines %>%
   select(-taster_twitter_handle)
 head(wines)
 ```
+## Add Reviewer profile info
 
+Each reviewer has there own bias. To offset that we made a "profile" for each reviewer which includes characteristics like: `avg_points`, `sd_points`, and `var_points`
+```{r}
+taster_rating_profile <- wines %>%
+  group_by(taster_name) %>%
+  summarize(
+    avg_points = mean(points),
+    sd_points = sd(points),
+    var_points = var(points)
+  )
+
+tasters <- inner_join(tasters, taster_rating_profile, by = "taster_name")
+head(tasters)
+```
 ### Add Rating Classification
 
 Add following classification to wine dataset as found on the [website](https://www.winemag.com/2010/04/09/you-asked-how-is-a-wines-score-determined/):
@@ -90,16 +105,33 @@ wines<- wines %>%
 head(wines)
 ```
 
+## Add Adjusted Points
+
+Since, each reviewer has a different bias we created a normalized metric, `norm_points`, by looking at the number of standard deviatioins a wine is from the reviewer's `avg_points`. This gives use a more accurate representation of which which wines are better than the rest.
+
+```{r}
+normalize_points <- function(points, name){
+  t <- tasters %>%
+    filter(taster_name == name)
+  nrow(t)
+  #return((points-t$avg_points)/t$sd_points)
+}
+
+wine_sample %>%
+  rowwise() %>%
+  mutate(norm_points = normalize_points(points, taster_name))
+```
+
 # Data Exploration
 
-EDA (correlation priceXpoints, with ```DataExplorer``` library? using (this)[https://datascienceplus.com/blazing-fast-eda-in-r-with-dataexplorer/])
+## Univariate Exploration
+Correlation `price` by `points`, using ```DataExplorer``` library which can be found [here](https://datascienceplus.com/blazing-fast-eda-in-r-with-dataexplorer/)
 ```{r}
-wines %>% 
-  ggplot() +
-    geom_point(mapping = (aes(x = points, y = price)), na.rm = T)
+# TODO: IZZY
 ```
 
 ```{r}
+# TODO: OASKI (This is not producing correct results)
 wines %>%
     summarize(avg_price = mean(price, na.rm=TRUE), 
               sd_price = sd(price, na.rm=TRUE),
@@ -108,6 +140,7 @@ wines %>%
 ```
 
 ```{r}
+# TODO: OASKI (This is not producing correct results)
 wines %>%
     summarize(avg_points = mean(points, na.rm=TRUE), 
               sd_points = sd(points, na.rm=TRUE),
@@ -115,14 +148,22 @@ wines %>%
               highest_points = max(points,na.rm=TRUE))
 ```
 
-Select the provinces based on points  and Select the best province for wine based on the average points of the sample size. 
-
-#find the average number of points across the 1,000 samples
+## Price by Points
+Notice the data is "stacked" and the socres range from 80-100
 ```{r}
-wine_per_province <- wine %>% 
-  select(province, points) %>% 
-  summarise(points = mean(points))
-wine_per_province
+wines %>% 
+  ggplot() +
+  geom_point(mapping = (aes(x = points, y = price)), na.rm = T, alpha = 0.15) +
+  labs(title = "Price by Points", x = "Points", y = "Price")
+```
+
+TODO: IZZY (Why did we log this?)
+
+```{r}
+wines %>% 
+  ggplot() +
+  geom_point(mapping = (aes(x = points, y = log(price))), na.rm = T, alpha = 0.15) +
+  labs(title = "log(Price) by Points", x = "Points", y = "log(Price)")
 ```
 
 # Data Analysis
