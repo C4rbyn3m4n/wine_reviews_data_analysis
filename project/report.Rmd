@@ -3,9 +3,9 @@ title: "Exploring and Analyizing Wine Enthusiast Reviews"
 output: html_notebook
 ---
 
-## Introduction
+# Prerequisites
 
-- Load the `tidyverse, ggplot, and rtweet` packages
+Load required packages
 ```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(ggplot2)
@@ -13,25 +13,41 @@ library(rtweet)
 library(readr)
 ```
 
+# Dataset
 
-This data set was scraped from WineEnthusiast, a website that reviews and rates many differet types of wines.  
-
-- This dataset includes information of of 130,000 wine reviews with 10 different data fields. 
-  
+Import processed data, which can be found [here](https://github.com/C4rbyn3m4n/wine_reviews_data_analysis/blob/master/data/processed_data/preprocessing.rmd).
 
 ```{r}
 #read preprocessed data
 wines <- read.csv(file = '../data/processed_data/wines.csv')
 ```
 
+Get sample of dataset
 ```{r}
-#set seed value to birthday of Ricardo Rodriguez, American wrestler and ring announcer
+#set seed value to birthday of Ricardo Rodriguez, American wrestler and ring announcer and Dr. Reinaldo (Rei) Sanchez-Arias
 set.seed(19630217)
 
 #set percentage to test with for simplicity
-percentage <- 10
+percentage <- 5
 wine_sample<- sample_n(wines, percentage/100*nrow(wines))
 ```
+
+### Split Taster data into different table
+
+```{r}
+tasters <- wines %>%
+  select(taster_name, taster_twitter_handle) %>% unique()
+tasters
+```
+
+Drop `taster_twitter_handle` in wines dataframe
+
+```{r}
+wines <- wines %>%
+  select(-taster_twitter_handle)
+head(wines)
+```
+
 
 EDA (correlation priceXpoints, with ```DataExplorer``` library? using (this)[https://datascienceplus.com/blazing-fast-eda-in-r-with-dataexplorer/])
 ```{r}
