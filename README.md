@@ -8,12 +8,12 @@ We will be using the data available at: https://www.kaggle.com/zynicide/wine-rev
 ## Team members
 
 
-<table style="width:100%" align = "center" rules = none>
-  <tr>
+<table width="100%">
+  <tr algin="center">
       <td>
         <img src="https://avatars3.githubusercontent.com/u/21210971?s=460&u=65bef4ce837966aeceb3fa6d9abbaef16a3a1642&v=4" alt="Vamsi" width="200"/>
     </td>
-    <td>
+    <td algin="center">
         Saivamsi Hanumanthu <br> 
         <a href="mailto:shanumanthu4016@floridapoly.edu"> 
             Vamso the Extraordinaire
