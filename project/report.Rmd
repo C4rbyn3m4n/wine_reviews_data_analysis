@@ -160,7 +160,8 @@ wines %>%
 ```{r}
 wines %>%
   ggplot() +
-  geom_bar(mapping = aes(x=vintage))
+  geom_bar(mapping = aes(x=vintage)) +
+  
 ```
 
 ### Winery
