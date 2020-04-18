@@ -164,34 +164,50 @@ wines %>%
 ```
 
 ### Winery
+Count the number of wines per winery (in a column graph)
 ```{r}
-# TODO: Osaki
+wines %>%
+  group_by(winery) %>%
+  summarize(count = n()) %>%
+  arrange(desc(count)) %>%
+  slice(1:15) %>%
+  ggplot() +
+  geom_col(mapping = aes(x=count, y =winery)) 
 ```
 
 ### Province
+Count the number of wines per province (in a column graph)
 ```{r}
-# TODO: OSAKI
+wines %>% 
+  group_by(province) %>% 
+  summarize(count = n()) %>% 
+  arrange(desc(count)) %>% 
+  slice(1:10) %>% 
+  ggplot()+
+  geom_bar(mapping = aes(y = province, x = count))
 ```
 
 ### Price
+(graphs to understand where the majority of the data is. (in a column graph))
 ```{r}
-# TODO: OASKI (This is not producing correct results)
-wines %>%
-    summarize(avg_price = mean(price, na.rm=TRUE), 
-              sd_price = sd(price, na.rm=TRUE),
-              lowest_price = min(price, na.rm=TRUE),
-              highest_price = max(price,na.rm=TRUE))
+mean_price <- (mean(wines$price, na.rm = TRUE))
+sd_price <- (sd(wines$price, na.rm = TRUE))
+min_price <- (min(wines$price, na.rm = TRUE))
+max_price <- print(max(wines$price, na.rm = TRUE))
+
+ggplot(mapping = aes(mean_price, sd_price, min_price, max_price))+
+  geom_boxplot()
 ```
 
-### Points
+### Points 
+(graphs to understand where the majority of the data is. (in a column graph))
 ```{r}
-# TODO: OASKI (This is not producing correct results)
-wines %>%
-    summarize(avg_points = mean(points, na.rm=TRUE), 
-              sd_points = sd(points, na.rm=TRUE),
-              lowest_points = min(points, na.rm=TRUE),
-              highest_points = max(points,na.rm=TRUE))
+print(mean(wines$points))
+print(sd(wines$points))
+print(min(wines$points))
+print(max(wines$points))
 ```
+
 
 Points distribution by Reviewer
 ```{r}
@@ -226,10 +242,14 @@ wines %>%
 #Find the best province for wine using the average points across the 1,000 samples
 #drop the descriptions or just select price? set points to max(points)
 ```{r}
+mean_points <- mean(wine_sample$points)
+mean_points
+
 best_province <- wine_sample %>% 
-  group_by(province, points) %>% 
-  filter(points > 88.669)
-best_province  
+  group_by(points) %>% 
+  filter(points > mean_points) %>% 
+  arrange(desc(points))
+best_province
 ```
 
 
