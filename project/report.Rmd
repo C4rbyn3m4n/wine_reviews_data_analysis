@@ -24,6 +24,10 @@ Import processed data, which can be found [here](https://github.com/C4rbyn3m4n/w
 wines <- read.csv(file = '../data/processed_data/wines.csv')
 ```
 
+```{r}
+glimpse(wines)
+```
+
 Get sample of dataset
 ```{r}
 #set seed value to birthday of Ricardo Rodriguez, American wrestler and ring announcer and Dr. Reinaldo (Rei) Sanchez-Arias
@@ -128,24 +132,34 @@ head(wines)
 Vintage seems to have year 7200
 ``` {r}
 wines <- wines %>%
-  filter(vintage<2019)
+  filter(vintage<2019, alcohol < 50)
 ```
 # Data Exploration
 
 ## Univariate Exploration
 Correlation `price` by `points`, using ```DataExplorer``` library which can be found [here](https://datascienceplus.com/blazing-fast-eda-in-r-with-dataexplorer/)
 ```{r}
-# TODO: IZZY
+plot_correlation(c('wines$price', 'wines$points'))
 ```
 
-### Alcohol Amount
+### Alcohol Content
 ```{r}
-# TODO: IZZY
+wines %>% 
+  group_by(alcohol) %>%
+  summarise(count = n()) %>% 
+  ggplot() +
+  geom_histogram(mapping = aes(x = alcohol)) +
+  ylim(0 ,50)
 ```
 
 ### Category
 ```{r}
-# TODO: IZZY
+wines %>% 
+  group_by(points) %>% 
+  count(category) %>%  
+  ggplot() +
+  facet_wrap(~ category) +
+  geom_bar(mapping = aes(x=points))
 ```
 
 ### Vintage
@@ -154,6 +168,7 @@ Count wines per year (Note: Data has been sanitized)
 wines %>%
   group_by(vintage) %>%
   summarize(count = n())
+
 ```
 
 
@@ -178,7 +193,7 @@ wines %>%
 ```{r}
 # TODO: OASKI (This is not producing correct results)
 wines %>%
-    summarize(avg_price = mean(price, na.rm=TRUE), 
+    se(avg_price = mean(price, na.rm=TRUE), 
               sd_price = sd(price, na.rm=TRUE),
               lowest_price = min(price, na.rm=TRUE),
               highest_price = max(price,na.rm=TRUE))
@@ -188,10 +203,10 @@ wines %>%
 ```{r}
 # TODO: OASKI (This is not producing correct results)
 wines %>%
-    summarize(avg_points = mean(points, na.rm=TRUE), 
-              sd_points = sd(points, na.rm=TRUE),
-              lowest_points = min(points, na.rm=TRUE),
-              highest_points = max(points,na.rm=TRUE))
+    mean(points, na.rm=TRUE) 
+    min(points, na.rm=TRUE)
+    max(points,na.rm=TRUE) 
+    sd(points, na.rm=TRUE)
 ```
 
 Points distribution by Reviewer
