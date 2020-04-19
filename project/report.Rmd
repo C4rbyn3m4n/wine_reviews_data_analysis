@@ -188,19 +188,16 @@ wines %>%
 ```
 
 ### Price
-(graphs to under stand where the majority of the data is. (in a column graph))
+Calculating the Mean, Standard Deviation, Minimum, and Max Price for the entire wine dataset and printing the values.
 ```{r}
-mean_price <- (mean(wines$price, na.rm = TRUE))
-sd_price <- (sd(wines$price, na.rm = TRUE))
-min_price <- (min(wines$price, na.rm = TRUE))
+mean_price <- print(mean(wines$price, na.rm = TRUE))
+sd_price <- print(sd(wines$price, na.rm = TRUE))
+min_price <- print(min(wines$price, na.rm = TRUE))
 max_price <- print(max(wines$price, na.rm = TRUE))
- 
-ggplot(mapping = aes(mean_price, sd_price, min_price, max_price))+
-  geom_boxplot()
 ```
 
-### Points 
-(graphs to understand where the majority of the data is. (in a column graph))
+###  Points 
+Calculating the Mean, Standard Deviation, Minimum, and Max Points for the entire wine dataset and printing the values.
 ```{r}
 print(mean(wines$points))
 print(sd(wines$points))
@@ -210,7 +207,8 @@ print(max(wines$points))
 ```
 
 
-Points distribution by Reviewer
+
+To help you understand the point distribution by reviewers, we did a multivarite visualization that coorelates some taster names based on the average wine points as identified  by the x-intercept. This give you the reader an idea of how some reviewers correlate to the overall average.
 ```{r}
 wines %>%
   ggplot() +
