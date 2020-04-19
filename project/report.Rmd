@@ -5,7 +5,7 @@ output: html_notebook
 
 # Prerequisites
 
-Load required packages
+Loading the required packages
 ```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(dplyr)
@@ -133,7 +133,7 @@ wines <- wines %>%
 # Data Exploration
 
 ## Univariate Exploration
-Correlation `price` by `points`, using ```DataExplorer``` library which can be found [here](https://datascienceplus.com/blazing-fast-eda-in-r-with-dataexplorer/)
+Correlating `price` by `points`, using ```DataExplorer``` library which can be found [here](https://datascienceplus.com/blazing-fast-eda-in-r-with-dataexplorer/)
 ```{r}
 # TODO: IZZY
 ```
@@ -164,10 +164,10 @@ wines %>%
 ```
 
 ### Winery
-Count the number of wines per winery (in a column graph)
+To better understand the number wines per winery, we did a univarite visualization that counts the number of wines per winery showing only 15 winerys to give you an idea what winery has the most selction of wines.
 ```{r}
 wines %>%
-  group_by(winery) %>%
+  group_by(winery) %>%==
   summarize(count = n()) %>%
   arrange(desc(count)) %>%
   slice(1:15) %>%
@@ -176,7 +176,7 @@ wines %>%
 ```
 
 ### Province
-Count the number of wines per province (in a column graph)
+To better understand the number wines per province, we did a univarite visualization that counts the number of wines per province showing only the top 10 provinces with the most wines. This can give the reader an idea where their wine will most likely be made with California standing out as a clear leader.
 ```{r}
 wines %>% 
   group_by(province) %>% 
@@ -184,17 +184,17 @@ wines %>%
   arrange(desc(count)) %>% 
   slice(1:10) %>% 
   ggplot()+
-  geom_bar(mapping = aes(y = province, x = count))
+  geom_col(aes(x = count, y = province))
 ```
 
 ### Price
-(graphs to understand where the majority of the data is. (in a column graph))
+(graphs to under stand where the majority of the data is. (in a column graph))
 ```{r}
 mean_price <- (mean(wines$price, na.rm = TRUE))
 sd_price <- (sd(wines$price, na.rm = TRUE))
 min_price <- (min(wines$price, na.rm = TRUE))
 max_price <- print(max(wines$price, na.rm = TRUE))
-
+ 
 ggplot(mapping = aes(mean_price, sd_price, min_price, max_price))+
   geom_boxplot()
 ```
@@ -206,6 +206,7 @@ print(mean(wines$points))
 print(sd(wines$points))
 print(min(wines$points))
 print(max(wines$points))
+
 ```
 
 
@@ -239,13 +240,13 @@ wines %>%
 
 # Data Analysis
 
-#Find the best province for wine using the average points across the 1,000 samples
+#Find the best province for wine using the average points across the dataset
 #drop the descriptions or just select price? set points to max(points)
 ```{r}
-mean_points <- mean(wine_sample$points)
+mean_points <- mean(wines$points)
 mean_points
 
-best_province <- wine_sample %>% 
+best_province <- wines %>% 
   group_by(points) %>% 
   filter(points > mean_points) %>% 
   arrange(desc(points))
