@@ -14,12 +14,6 @@ Loading the required packages
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
-library(rtweet)
-library(readr)
-library(DataExplorer)
-```
-
-```{r}
 library(ggcute)
 ```
 
@@ -73,6 +67,7 @@ taster_rating_profile <- wines %>%
 tasters <- inner_join(tasters, taster_rating_profile, by = "taster_name")
 head(tasters)
 ```
+
 ### Add Rating Classification
 
 Add following classification to wine dataset as found on the [website](https://www.winemag.com/2010/04/09/you-asked-how-is-a-wines-score-determined/):
@@ -132,8 +127,7 @@ head(wines)
 ```
 
 ## Data Sanitation
-
-Vintage seems to have year 7200
+Vintage seems to have year 7200, so we filtered all data upto 2019
 ``` {r}
 wines <- wines %>%
   filter(vintage<2019)
@@ -141,68 +135,34 @@ wines <- wines %>%
 # Data Exploration
 
 ## Univariate Exploration
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-Correlating `price` by `points`, using ```DataExplorer``` library which can be found [here](https://datascienceplus.com/blazing-fast-eda-in-r-with-dataexplorer/)
-
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 ### Alcohol Amount
+TODO: EXPLAIN GRAPH AND WHAT WE ARE DOING HERE (OSAKI)
 ```{r}
 wines %>% 
   group_by(alcohol) %>% 
   ggplot(mapping = aes(x = alcohol)) +
   geom_histogram(na.rm = T,
                  bins = 50) +
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
   scale_x_continuous(
     name = "Alchohol Percentage", 
     breaks = seq(0,25,1), 
-    limits = c(4,22))
-```
-### Category
-```{r}
-wines %>% 
-#  group_by(points) %>% 
-#  count(category) %>%  
-  ggplot() +
-  facet_wrap(~ category) +
-  geom_point(mapping = aes(x=points, y = price))
-```
-=======
-  scale_x_continuous(name = "Alchohol Percentage", breaks = seq(0,25,1), limits = c(0,25)) +
+    limits = c(4,22)) +
   scale_fill_fairyfloss() +
   theme_fairyfloss() +
   theme(plot.background = element_rect("white"))
- 
-  
 ```
-
->>>>>>> Stashed changes
-=======
-  scale_x_continuous(name = "Alchohol Percentage", breaks = seq(0,25,1), limits = c(0,25)) +
-  scale_fill_fairyfloss() +
-  theme_fairyfloss() +
-  theme(plot.background = element_rect("white"))
- 
-  
-```
-
->>>>>>> Stashed changes
 
 ### Vintage
+Understanding what vintage the reivewed wines were from.
 ```{r}
 wines %>%
   group_by(vintage) %>%
   summarise(count = n())
 ```
 
-Note that data points before 1990 have been omitted for clarity in visualization.
 
-Count wines per year (Note: Data has been sanitized)
+TODO: EXPLAIN GRPAHS (IZZY)
+(Note: Data points before 1990 have been omitted for clarity in visualization)
 ```{r}
 wines %>%
   group_by(vintage) %>%
@@ -253,26 +213,16 @@ print(paste("Min Price:", min_price))
 print(paste("Max Price:", max_price))
 ```
 
+TODO: Vamsi
 ```{r}
 wines %>% 
   filter(price < 1000) %>% 
   group_by(price) %>% 
   summarise(count = n()) %>% 
-  select(price, count) %>% 
   ggplot() +
-  geom_boxplot(mapping = aes(x=price, y = count), 
-             na.rm = T) 
-```
-
-```{r}
-wines %>% 
-  filter(price < 1000) %>% 
-  group_by(price) %>% 
-  summarise(count = n()) %>% 
-  select(price, count) %>% 
-  ggplot() +
-  geom_boxplot(mapping = aes(x=price, y = count), 
-             na.rm = T) 
+  geom_histogram(
+    mapping = aes(x=price), 
+    na.rm = T) 
 ```
 
 ###  Points 
@@ -288,8 +238,18 @@ print(paste("SD Points:", sd_points))
 print(paste("Min Points:", min_points))
 print(paste("Max Points:", max_points))
 ```
+TODO: EXPLAIN GRPAH OSAKI
+```{r}
+wines %>%
+  ggplot() +
+  geom_histogram(
+    mapping = aes(x=points),
+    bins = 20)
+```
 
+## Multivariate Exploration
 
+## Taster by Points
 To help you understand the point distribution by reviewers, we did a multivarite visualization that coorelates some taster names based on the average wine points as identified  by the x-intercept. This give you the reader an idea of how some reviewers correlate to the overall average.
 ```{r}
 wines %>%
@@ -298,9 +258,9 @@ wines %>%
   geom_vline(xintercept = mean(wines$points))
 ```
 
-## Multivariate Exploration
 
 ## Price by Points
+TODO EXPLAIN VAMSI
 Notice the data is "stacked" and the socres range from 80-100
 ```{r}
 wines %>% 
@@ -309,7 +269,16 @@ wines %>%
   labs(title = "Price by Points", x = "Points", y = "Price")
 ```
 
+TODO EXPLAIN VAMSI
+```{r}
+wines %>% 
+  ggplot() +
+  geom_point(mapping = (aes(x = points, y = log(price))), na.rm = T, alpha = 0.15) +
+  labs(title = "log(Price) by Points", x = "Points", y = "log(Price)")
+```
+
 ### Category
+TODO EXPLAIN IZZY
 This 
 ```{r}
 wines %>% 
@@ -324,37 +293,61 @@ wines %>%
   theme(legend.position = "none")
 ```
 
-```{r}
-wines %>% 
-  ggplot() +
-  geom_point(mapping = (aes(x = points, y = log(price))), na.rm = T, alpha = 0.15) +
-  labs(title = "log(Price) by Points", x = "Points", y = "log(Price)")
-```
+
 
 # Data Analysis
-To help you understand the data analysis, we found the best province for wine by using the average points across the wines. 
+
+## Which province has the best wine?
+TODO EXPLAIN OSAKI
+To determine the best province for wine by points we average all the wines per province and return the top 10 with standard error.
 ```{r}
-mean_points <- mean(wines$points)
-best_province <- wines %>% 
-  summarise(province) %>% 
-  filter(points > mean_points) %>% 
-  arrange(desc(points)) %>%  
+wines %>% 
+  group_by(province) %>%
+  summarise(avg_points_prov = mean(points), count = n(), std_points_prov_err = sd(points)/sqrt(count)) %>%
+  filter(count>30) %>%
+  arrange(desc(avg_points_prov)) %>%
+  slice(1:10) %>%
   ggplot() +
-  geom_col(mapping = aes(x= province, y = points)) 
-best_province
+  geom_col(mapping = aes(y=province, x= avg_points_prov)) +
+   geom_errorbar(
+    mapping = aes(
+      y = province,
+      x = avg_points_prov,
+      xmin = avg_points_prov - std_points_prov_err, 
+      xmax = avg_points_prov + std_points_prov_err
+      ),
+    width = 0.2
+  )
 ```
 
+## Which wine variety is the best?
+To determine the best variety of wine we use the average point of all wines per variety with a sample size greater than 30. The graph below shows the the top 10 varieties with their respective standard error.
 
-Best wine, by variety
 ```{r}
-#wine_best_variety <- 
 wines %>% 
   group_by(variety) %>% 
-  summarise(mean_points = mean(points)) %>% 
-  arrange(desc(mean_points)) 
-  
+  summarise(
+    avg_points_variety = mean(points),
+    count = n(),
+    sd_err_points_variety = sd(points)/sqrt(count)) %>%
+  filter(count>30) %>%
+  arrange(desc(avg_points_variety)) %>%
+  slice(1:10) %>%
+  ggplot() +
+  geom_col(mapping = aes(y=variety, x=avg_points_variety))+
+  geom_errorbar(
+    mapping = aes(
+      y = variety,
+      x = avg_points_variety,
+      xmin = avg_points_variety - sd_err_points_variety, 
+      xmax = avg_points_variety + sd_err_points_variety
+      ),
+    width = 0.2
+  )
 ```
 
+## How much are people willing to pay?
+TODO IZZY
 ```{r}
 user_price <- readline(prompt = "How much are you willing to spend on a bottle?")
 user_price <- as.integer(user_price)
@@ -365,5 +358,14 @@ wines %>%
   select(title, price, points)
 ```
 
+## What is the best wine?
+
+
+## Where are wines produced the most?
+
 
 # Conclusion
+
+# Future Works
+
+# Works Cited
