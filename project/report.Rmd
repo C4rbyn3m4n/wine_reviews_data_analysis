@@ -134,9 +134,6 @@ wines <- wines %>%
 
 ## Univariate Exploration
 Correlating `price` by `points`, using ```DataExplorer``` library which can be found [here](https://datascienceplus.com/blazing-fast-eda-in-r-with-dataexplorer/)
-```{r}
-plot_correlation(c('wines$price', 'wines$points'))
-```
 
 ### Alcohol Amount
 ```{r}
@@ -145,9 +142,11 @@ wines %>%
   ggplot(mapping = aes(x = alcohol)) +
   geom_histogram(na.rm = T,
                  bins = 50) +
-  scale_x_continuous(name = "Alchohol Percentage", breaks = seq(0,25,1), limits = c(0,25))
+  scale_x_continuous(
+    name = "Alchohol Percentage", 
+    breaks = seq(0,25,1), 
+    limits = c(4,22))
 ```
-
 ### Category
 ```{r}
 wines %>% 
@@ -177,12 +176,12 @@ wines %>%
 To better understand the number wines per winery, we did a univarite visualization that counts the number of wines per winery showing only 15 winerys to give you an idea what winery has the most selction of wines.
 ```{r}
 wines %>%
-  group_by(winery) %>%==
+  group_by(winery) %>%
   summarize(count = n()) %>%
   arrange(desc(count)) %>%
   slice(1:15) %>%
   ggplot() +
-  geom_col(mapping = aes(x=count, y =winery)) 
+  geom_col(mapping = aes(x=count, y = reorder(winery, count)))
 ```
 
 ### Province
@@ -194,28 +193,36 @@ wines %>%
   arrange(desc(count)) %>% 
   slice(1:10) %>% 
   ggplot()+
-  geom_col(aes(x = count, y = province))
+  geom_col(aes(x = count, y = reorder(province, count)))
 ```
 
 ### Price
 Calculating the Mean, Standard Deviation, Minimum, and Max Price for the entire wine dataset and printing the values.
 ```{r}
-mean_price <- print(mean(wines$price, na.rm = TRUE))
-sd_price <- print(sd(wines$price, na.rm = TRUE))
-min_price <- print(min(wines$price, na.rm = TRUE))
-max_price <- print(max(wines$price, na.rm = TRUE))
+mean_price <- mean(wines$price, na.rm = TRUE)
+sd_price <- sd(wines$price, na.rm = TRUE)
+min_price <- min(wines$price, na.rm = TRUE)
+max_price <- max(wines$price, na.rm = TRUE)
+
+print(paste("Mean Price:", mean_price))
+print(paste("SD Price:", sd_price))
+print(paste("Min Price:", min_price))
+print(paste("Max Price:", max_price))
 ```
 
 ###  Points 
 Calculating the Mean, Standard Deviation, Minimum, and Max Points for the entire wine dataset and printing the values.
 ```{r}
-print(mean(wines$points))
-print(sd(wines$points))
-print(min(wines$points))
-print(max(wines$points))
+mean_points <- mean(wines$points, na.rm = TRUE)
+sd_points <- sd(wines$points, na.rm = TRUE)
+min_points <- min(wines$points, na.rm = TRUE)
+max_points <- max(wines$points, na.rm = TRUE)
 
+print(paste("Mean Points:", mean_points))
+print(paste("SD Points:", sd_points))
+print(paste("Min Points:", min_points))
+print(paste("Max Points:", max_points))
 ```
-
 
 
 To help you understand the point distribution by reviewers, we did a multivarite visualization that coorelates some taster names based on the average wine points as identified  by the x-intercept. This give you the reader an idea of how some reviewers correlate to the overall average.
@@ -247,17 +254,15 @@ wines %>%
 ```
 
 # Data Analysis
-
-#Find the best province for wine using the average points across the dataset
-#drop the descriptions or just select price? set points to max(points)
+To help you understand the data analysis, we found the best province for wine by using the average points across the wines. 
 ```{r}
 mean_points <- mean(wines$points)
-mean_points
-
 best_province <- wines %>% 
-  group_by(points) %>% 
+  summarise(province) %>% 
   filter(points > mean_points) %>% 
-  arrange(desc(points))
+  arrange(desc(points)) %>%  
+  ggplot() +
+  geom_col(mapping = aes(x= province, y = points)) 
 best_province
 ```
 
