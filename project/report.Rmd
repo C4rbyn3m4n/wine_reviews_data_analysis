@@ -135,7 +135,7 @@ wines <- wines %>%
 ## Univariate Exploration
 Correlating `price` by `points`, using ```DataExplorer``` library which can be found [here](https://datascienceplus.com/blazing-fast-eda-in-r-with-dataexplorer/)
 ```{r}
-# TODO: IZZY
+plot_correlation(c('wines$price', 'wines$points'))
 ```
 
 ### Alcohol Amount
@@ -150,7 +150,12 @@ wines %>%
 
 ### Category
 ```{r}
-# TODO: IZZY
+wines %>% 
+#  group_by(points) %>% 
+#  count(category) %>%  
+  ggplot() +
+  facet_wrap(~ category) +
+  geom_point(mapping = aes(x=points, y = price))
 ```
 
 ### Vintage
