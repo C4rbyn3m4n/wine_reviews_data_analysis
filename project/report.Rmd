@@ -1,6 +1,10 @@
 ---
 title: "Exploring and Analyizing Wine Enthusiast Reviews"
-output: html_notebook
+output: 
+  html_notebook:
+    toc: true
+    toc_float: true
+    theme: united
 ---
 
 # Prerequisites
