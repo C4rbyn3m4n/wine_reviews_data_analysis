@@ -199,19 +199,21 @@ wines %>%
 ### Price
 Calculating the Mean, Standard Deviation, Minimum, and Max Price for the entire wine dataset and printing the values.
 ```{r}
-mean_price <- print(mean(wines$price, na.rm = TRUE))
-sd_price <- print(sd(wines$price, na.rm = TRUE))
-min_price <- print(min(wines$price, na.rm = TRUE))
-max_price <- print(max(wines$price, na.rm = TRUE))
+mean_price <- mean(wines$price, na.rm = TRUE)
+sd_price <- sd(wines$price, na.rm = TRUE)
+min_price <- min(wines$price, na.rm = TRUE)
+max_price <- max(wines$price, na.rm = TRUE)
+
+print(paste("Mean Price:", mean_price))
+print(paste("SD Price:", sd_price))
+print(paste("Min Price:", min_price))
+print(paste("Max Price:", max_price))
 ```
 
 ###  Points 
 Calculating the Mean, Standard Deviation, Minimum, and Max Points for the entire wine dataset and printing the values.
 ```{r}
-print(mean(wines$points))
-print(sd(wines$points))
-print(min(wines$points))
-print(max(wines$points))
+
 
 ```
 
