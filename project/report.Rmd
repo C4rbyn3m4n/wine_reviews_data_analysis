@@ -237,17 +237,15 @@ wines %>%
 ```
 
 # Data Analysis
-
-#Find the best province for wine using the average points across the dataset
-#drop the descriptions or just select price? set points to max(points)
+To help you understand the data analysis, we found the best province for wine by using the average points across the wines. 
 ```{r}
 mean_points <- mean(wines$points)
-mean_points
-
 best_province <- wines %>% 
-  group_by(points) %>% 
+  summarise(province) %>% 
   filter(points > mean_points) %>% 
-  arrange(desc(points))
+  arrange(desc(points)) %>%  
+  ggplot() +
+  geom_col(mapping = aes(x= province, y = points)) 
 best_province
 ```
 
