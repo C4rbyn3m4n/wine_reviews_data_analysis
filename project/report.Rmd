@@ -134,9 +134,6 @@ wines <- wines %>%
 
 ## Univariate Exploration
 Correlating `price` by `points`, using ```DataExplorer``` library which can be found [here](https://datascienceplus.com/blazing-fast-eda-in-r-with-dataexplorer/)
-```{r}
-plot_correlation(c('wines$price', 'wines$points'))
-```
 
 ### Alcohol Amount
 ```{r}
@@ -145,9 +142,11 @@ wines %>%
   ggplot(mapping = aes(x = alcohol)) +
   geom_histogram(na.rm = T,
                  bins = 50) +
-  scale_x_continuous(name = "Alchohol Percentage", breaks = seq(0,25,1), limits = c(0,25))
+  scale_x_continuous(
+    name = "Alchohol Percentage", 
+    breaks = seq(0,25,1), 
+    limits = c(4,22))
 ```
-
 ### Category
 ```{r}
 wines %>% 
@@ -177,12 +176,12 @@ wines %>%
 To better understand the number wines per winery, we did a univarite visualization that counts the number of wines per winery showing only 15 winerys to give you an idea what winery has the most selction of wines.
 ```{r}
 wines %>%
-  group_by(winery) %>%==
+  group_by(winery) %>%
   summarize(count = n()) %>%
   arrange(desc(count)) %>%
   slice(1:15) %>%
   ggplot() +
-  geom_col(mapping = aes(x=count, y =winery)) 
+  geom_col(mapping = aes(x=count, y = reorder(winery, count)))
 ```
 
 ### Province
@@ -194,7 +193,7 @@ wines %>%
   arrange(desc(count)) %>% 
   slice(1:10) %>% 
   ggplot()+
-  geom_col(aes(x = count, y = province))
+  geom_col(aes(x = count, y = reorder(province, count)))
 ```
 
 ### Price
