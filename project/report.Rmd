@@ -19,6 +19,10 @@ library(readr)
 library(DataExplorer)
 ```
 
+```{r}
+library(ggcute)
+```
+
 # Dataset
 
 Import processed data, which can be found [here](https://github.com/C4rbyn3m4n/wine_reviews_data_analysis/blob/master/data/processed_data/preprocessing.rmd).
@@ -137,8 +141,14 @@ wines <- wines %>%
 # Data Exploration
 
 ## Univariate Exploration
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 Correlating `price` by `points`, using ```DataExplorer``` library which can be found [here](https://datascienceplus.com/blazing-fast-eda-in-r-with-dataexplorer/)
 
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 ### Alcohol Amount
 ```{r}
 wines %>% 
@@ -146,6 +156,8 @@ wines %>%
   ggplot(mapping = aes(x = alcohol)) +
   geom_histogram(na.rm = T,
                  bins = 50) +
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
   scale_x_continuous(
     name = "Alchohol Percentage", 
     breaks = seq(0,25,1), 
@@ -160,20 +172,47 @@ wines %>%
   facet_wrap(~ category) +
   geom_point(mapping = aes(x=points, y = price))
 ```
+=======
+  scale_x_continuous(name = "Alchohol Percentage", breaks = seq(0,25,1), limits = c(0,25)) +
+  scale_fill_fairyfloss() +
+  theme_fairyfloss() +
+  theme(plot.background = element_rect("white"))
+ 
+  
+```
+
+>>>>>>> Stashed changes
+=======
+  scale_x_continuous(name = "Alchohol Percentage", breaks = seq(0,25,1), limits = c(0,25)) +
+  scale_fill_fairyfloss() +
+  theme_fairyfloss() +
+  theme(plot.background = element_rect("white"))
+ 
+  
+```
+
+>>>>>>> Stashed changes
 
 ### Vintage
+```{r}
+wines %>%
+  group_by(vintage) %>%
+  summarise(count = n())
+```
+
+Note that data points before 1990 have been omitted for clarity in visualization.
+
 Count wines per year (Note: Data has been sanitized)
 ```{r}
 wines %>%
   group_by(vintage) %>%
-  summarize(count = n())
-```
-
-
-```{r}
-wines %>%
   ggplot() +
-  geom_bar(mapping = aes(x=vintage))
+  geom_bar(mapping = aes(x=vintage),
+           na.rm = T) +
+  scale_x_continuous(breaks = seq(1990,2019,5), 
+                     limits = c(1990,2019)) +
+  labs(x = "Vintage", y = "Count") +
+  theme_fairyfloss()
 ```
 
 ### Winery
@@ -214,6 +253,28 @@ print(paste("Min Price:", min_price))
 print(paste("Max Price:", max_price))
 ```
 
+```{r}
+wines %>% 
+  filter(price < 1000) %>% 
+  group_by(price) %>% 
+  summarise(count = n()) %>% 
+  select(price, count) %>% 
+  ggplot() +
+  geom_boxplot(mapping = aes(x=price, y = count), 
+             na.rm = T) 
+```
+
+```{r}
+wines %>% 
+  filter(price < 1000) %>% 
+  group_by(price) %>% 
+  summarise(count = n()) %>% 
+  select(price, count) %>% 
+  ggplot() +
+  geom_boxplot(mapping = aes(x=price, y = count), 
+             na.rm = T) 
+```
+
 ###  Points 
 Calculating the Mean, Standard Deviation, Minimum, and Max Points for the entire wine dataset and printing the values.
 ```{r}
@@ -248,7 +309,20 @@ wines %>%
   labs(title = "Price by Points", x = "Points", y = "Price")
 ```
 
-TODO: IZZY (Why did we log this?)
+### Category
+This 
+```{r}
+wines %>% 
+  group_by(points) %>% 
+  filter(price < 1000) %>% 
+  ggplot() +
+  geom_point(mapping = aes(x=points, y = price, color = category), 
+             na.rm = T) +
+  facet_wrap(~ category) +
+  scale_color_fairyfloss() +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
 
 ```{r}
 wines %>% 
