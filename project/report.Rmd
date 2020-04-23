@@ -374,6 +374,21 @@ wines %>%
   arrange(desc(norm_points)) %>%
   slice(1:10)
 ```
+## What is the best value wine?
+A simple value metric we can use to determine best value is `points/price`
+```{r}
+wines %>%
+  arrange(desc(points/price)) %>%
+  slice(1:10)
+```
+
+However, again this metric is not normalized. Instead, `norm_points/price` would yield more robust results.
+```{r}
+wines %>%
+  arrange(desc(norm_points/price)) %>%
+  slice(1:10)
+```
+
 ## Where are wines produced the most?
 
 
