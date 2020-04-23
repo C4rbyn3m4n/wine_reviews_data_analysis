@@ -213,10 +213,16 @@ print(paste("Max Price:", max_price))
 ###  Points 
 Calculating the Mean, Standard Deviation, Minimum, and Max Points for the entire wine dataset and printing the values.
 ```{r}
+mean_points <- mean(wines$points, na.rm = TRUE)
+sd_points <- sd(wines$points, na.rm = TRUE)
+min_points <- min(wines$points, na.rm = TRUE)
+max_points <- max(wines$points, na.rm = TRUE)
 
-
+print(paste("Mean Points:", mean_points))
+print(paste("SD Points:", sd_points))
+print(paste("Min Points:", min_points))
+print(paste("Max Points:", max_points))
 ```
-
 
 
 To help you understand the point distribution by reviewers, we did a multivarite visualization that coorelates some taster names based on the average wine points as identified  by the x-intercept. This give you the reader an idea of how some reviewers correlate to the overall average.
