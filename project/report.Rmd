@@ -140,16 +140,17 @@ TODO: EXPLAIN GRAPH AND WHAT WE ARE DOING HERE (OSAKI)
 ```{r}
 wines %>% 
   group_by(alcohol) %>% 
-  ggplot(mapping = aes(x = alcohol)) +
-  geom_histogram(na.rm = T,
+  ggplot() +
+  geom_histogram(mapping = aes(x = alcohol, fill = rating_category),
+                 na.rm = T,
                  bins = 50) +
   scale_x_continuous(
     name = "Alchohol Percentage", 
     breaks = seq(0,25,1), 
-    limits = c(4,22)) +
-  scale_fill_fairyfloss() +
-  theme_fairyfloss() +
-  theme(plot.background = element_rect("white"))
+    limits = c(4,22)) #+
+#  scale_fill_fairyfloss() +
+#  theme_fairyfloss() +
+#  theme(plot.background = element_rect("white"))
 ```
 
 ### Vintage
@@ -167,12 +168,12 @@ TODO: EXPLAIN GRPAHS (IZZY)
 wines %>%
   group_by(vintage) %>%
   ggplot() +
-  geom_bar(mapping = aes(x=vintage),
+  geom_bar(mapping = aes(x=vintage, fill = rating_category),
            na.rm = T) +
   scale_x_continuous(breaks = seq(1990,2019,5), 
                      limits = c(1990,2019)) +
-  labs(x = "Vintage", y = "Count") +
-  theme_fairyfloss()
+  labs(x = "Vintage", y = "Count") #+
+  #theme_fairyfloss()
 ```
 
 ### Winery
@@ -184,7 +185,10 @@ wines %>%
   arrange(desc(count)) %>%
   slice(1:15) %>%
   ggplot() +
-  geom_col(mapping = aes(x=count, y = reorder(winery, count)))
+  geom_col(
+    mapping = aes(
+      x=count, 
+      y = reorder(winery, count)))
 ```
 
 ### Province
@@ -254,8 +258,10 @@ To help you understand the point distribution by reviewers, we did a multivarite
 ```{r}
 wines %>%
   ggplot() +
-  geom_boxplot(aes(y=taster_name, x=points)) +
-  geom_vline(xintercept = mean(wines$points))
+  geom_boxplot(aes(y=taster_name, x=points, color = taster_name)) +
+  geom_vline(xintercept = mean(wines$points)) +
+  theme(
+    legend.position = "none")
 ```
 
 
@@ -265,16 +271,19 @@ Notice the data is "stacked" and the socres range from 80-100
 ```{r}
 wines %>% 
   ggplot() +
-  geom_point(mapping = (aes(x = points, y = price)), na.rm = T, alpha = 0.15) +
-  labs(title = "Price by Points", x = "Points", y = "Price")
+  geom_point(mapping = (aes(x = points, y = price, color = rating_category)), na.rm = T, alpha = 0.2) +
+  labs(title = "Price by Points", x = "Points", y = "Price") +
+  geom_smooth(mapping = (aes(x = points, y = price))) +
+  theme(legend.position = "none")
 ```
 
 TODO EXPLAIN VAMSI
 ```{r}
 wines %>% 
   ggplot() +
-  geom_point(mapping = (aes(x = points, y = log(price))), na.rm = T, alpha = 0.15) +
-  labs(title = "log(Price) by Points", x = "Points", y = "log(Price)")
+  geom_point(mapping = (aes(x = points, y = log(price), color = rating_category)), na.rm = T, alpha = 0.15) +
+  labs(title = "log(Price) by Points", x = "Points", y = "log(Price)") +
+  geom_smooth(mapping = (aes(x = points, y = log(price))))
 ```
 
 ### Category
@@ -289,8 +298,7 @@ wines %>%
              na.rm = T) +
   facet_wrap(~ category) +
   scale_color_fairyfloss() +
-  theme_minimal() +
-  theme(legend.position = "none")
+  theme_minimal()
 ```
 
 
