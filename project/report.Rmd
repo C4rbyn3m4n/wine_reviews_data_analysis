@@ -520,23 +520,30 @@ wines %>%
 Sounds like a silly question, but take a closer look and you'll find an interesting question within it: "Can we determine the best value wine based on how much people are willing to pay?"  WE SURE CAN!
 
 ```{r}
-user_price <- readline(prompt = "How much are you willing to spend on a bottle?")
-user_price <- as.integer(user_price)
+# If you want to get user input
+#user_price <- readline(prompt = "How much are you willing to spend on a bottle?")
+#user_price <- as.integer(user_price)
+user_price<-11
 
 wines %>% 
   filter(price <= user_price) %>%
   arrange(desc(norm_points/price)) %>%
-  slice(1:10)%>%
+  slice(1:10) %>%
   select(title, price, points,rating_category, norm_points)
 ```
 
 Now back to the orignal question with Jess
+<br>
+<div style="width:100%;height:0;padding-bottom:61%;position:relative;"><iframe src="https://giphy.com/embed/3osxY3Ju6p2jJbBo88" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div>
 
-
-```{r}
-wines %>%
-  filter(price < 11)
+```{r} 
+wines %>% 
+  filter(price < 11) %>%
+  filter(category == "Sparkling") %>%
+  filter(grepl("pink", title, ignore.case = T) == T) %>%
+  select(title,price, points,rating_category, norm_points)
 ```
+As you can see, "Yellow Tail 2015 Pink Bubbles Sparkling (South Australia)" is Jess's type of wine!
 
 # Conclusion
 
