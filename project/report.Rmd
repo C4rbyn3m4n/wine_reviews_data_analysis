@@ -48,6 +48,8 @@ Wines are normally classified in categories as found on the [website](https://ww
 |Good	     |  83-86	 | Suitable for everyday consumption; often good value.   |
 |Acceptable|	80-82	 | Can be employed in casual, less-critical circumstances |
 
+Also, this allows to take a quantitative data and turn it into qualitative data, which can be used for data visualization later. 
+
 ```{r}
 # function to add rating
 rating_category <- function(points){
@@ -244,8 +246,23 @@ wines %>%
   theme(legend.position = "none") +
   coord_flip()
 ```
-### Category
+### Wine Category
+Next, we wanted to visualize th distribution of different wine categories in our dataset.To better understand and visualize the data we categorized the graph based on `rating_category`. Notice, a majority of the wines are red or white wines
 
+```{r}
+wines %>% 
+  ggplot()+
+  geom_bar(
+    mapping = aes(
+      x = category,
+      fill = rating_category)) +
+  labs(
+    title = "Distribution of Wine Category",
+    x = "Wine Category", 
+    y = "Count",
+    fill = "Rating Category")+
+  coord_flip()
+```
 
 ### Price
 Next, we wanted to visualize the distribution of price in our dataset. To better understand and visualize the data we categorized the graph based on `rating_category`. Notice, a majority of wines are \$50 and below with the most common being between \$12 - \$25. Again, this accurately represents the real world as stated by [Vivino](https://www.vivino.com/wine-news/how-much-does-a-good-bottle-of-wine-cost) the average price for good bottle of red/white wine is ~\$15 and ~\$28 for a very good bottle. (CAUTION: The Vivino prices denoted were simply an average for red/white wines average costs. This was done to simply generalize the information to do a simple comparsion. Also, this limited to red/white wine and does not accurately include other types)
