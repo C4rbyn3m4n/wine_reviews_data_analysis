@@ -14,6 +14,7 @@ Loading the required packages
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
+library(scales)
 ```
 
 # Dataset
@@ -401,29 +402,44 @@ wines %>%
 
 
 # Data Analysis
-To determine the best province for wine by points, we averaged the points of all wines per province with a sample size greater than 30 and returned the top 10 with standard error. Standard error helps us determine the spread of the dataset. The graph below shows top 10 best provinces by average points with respect to standard error.
+Now that we fully understand the dataset we are working with we plan to answer some research questions proposed by the team.
 
 ## Which province has the best wine?
-TODO EXPLAIN OSAKI
-To determine the best province for wine by points we average all the wines per province and return the top 10 with standard error.
+To determine the best province for wine by points, we averaged the points of all wines per province with a sample size greater than 30 and returned the top 10 with standard error. Notice, how the standard error is low menaing the spread of our data is also low and the average is very accurate.
+
 ```{r}
 wines %>% 
   group_by(province) %>%
-  summarise(avg_points_prov = mean(points), count = n(), std_points_prov_err = sd(points)/sqrt(count)) %>%
+  summarise(
+    avg_points_prov = mean(points), 
+    count = n(), 
+    std_points_prov_err = sd(points)/sqrt(count)) %>%
   filter(count>30) %>%
   arrange(desc(avg_points_prov)) %>%
   slice(1:10) %>%
   ggplot() +
-  geom_col(mapping = aes(y=province, x= avg_points_prov)) +
+  geom_col(
+    mapping = aes(
+      x = reorder(province,avg_points_prov), 
+      y = avg_points_prov,
+      fill = province)) +
    geom_errorbar(
     mapping = aes(
-      y = province,
-      x = avg_points_prov,
-      xmin = avg_points_prov - std_points_prov_err, 
-      xmax = avg_points_prov + std_points_prov_err
+      x = province,
+      y = avg_points_prov,
+      ymin = avg_points_prov - std_points_prov_err, 
+      ymax = avg_points_prov + std_points_prov_err
       ),
     width = 0.2)+
-    labs(y = 'Province', x = "Average Points", title = "Average Points By Province (Top 10)")
+  scale_y_continuous(
+    limits=c(85,95), 
+    oob = rescale_none)+
+  labs(
+      x = 'Province', 
+      y = "Average Points", 
+      title = "Average Points By Province (Top 10)") +
+  theme(legend.position = "none")+
+  coord_flip()
 ```
 
 ## Which wine variety is the best?
