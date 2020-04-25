@@ -14,7 +14,6 @@ Loading the required packages
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
-library(ggcute)
 ```
 
 # Dataset
@@ -36,24 +35,29 @@ percentage <- 5
 wine_sample<- sample_n(wines, percentage/100*nrow(wines))
 ```
 
-### Split Taster data into different Data Frame
-
+## Split Taster Data
+To make our dataframes more managable we split reduntant information about the tasters into a new dataframe.
 ```{r}
 tasters <- wines %>%
-  select(taster_name, taster_twitter_handle) %>% unique()
+  select(taster_name, taster_twitter_handle) %>% 
+  unique()
 tasters
 ```
 
-Drop `taster_twitter_handle` in wines dataframe
 
+Drop `taster_twitter_handle` in wines dataframe
 ```{r}
 wines <- wines %>%
   select(-taster_twitter_handle)
 head(wines)
 ```
-## Add Reviewer profile info
+## Create a Reviewer Profile
 
-Each reviewer has there own bias. To offset that we made a "profile" for each reviewer which includes characteristics like: `avg_points`, `sd_points`, and `var_points`
+Each reviewer has there own bias. In order to offset that we made a "profile" for each reviewer, This profile allows us to later normalize the wine points for more robust apples to apples comparison. Each reviewers profile includes additional characteristics like: 
+- `avg_points` which is the avgerage of all the reviewers scores
+- `sd_points` which is the standard deviation of all the reviewers scores
+- `var_points` which is the variance of all the reviewers scores
+- `reviews` which is the number of reviews conducted
 ```{r}
 taster_rating_profile <- wines %>%
   group_by(taster_name) %>%
@@ -70,7 +74,7 @@ head(tasters)
 
 ### Add Rating Classification
 
-Add following classification to wine dataset as found on the [website](https://www.winemag.com/2010/04/09/you-asked-how-is-a-wines-score-determined/):
+Wines are normally classified in categories as found on the [website](https://www.winemag.com/2010/04/09/you-asked-how-is-a-wines-score-determined/). To create a more rich dataset we added the field `rating_category` determined as:
 
 |Category  | Rating  | Description                                            |
 |----------|---------|--------------------------------------------------------|
@@ -112,7 +116,7 @@ head(wines)
 
 ## Add Adjusted Points
 
-Since, each reviewer has a different bias we created a normalized metric, `norm_points`, by looking at the number of standard deviatioins a wine is from the reviewer's `avg_points`. This gives use a more accurate representation of which which wines are better than the rest.
+Since, each reviewer has a different bias we created a normalized metric, `norm_points`, by looking at the number of standard deviatioins a wine is from the reviewer's `avg_points`. This gives use a more accurate representation of which which wines are "better" than the rest.
 
 ```{r}
 normalize_points <- function(data){
@@ -127,72 +131,89 @@ head(wines)
 ```
 
 ## Data Sanitation
-Vintage seems to have year 7200, so we filtered all data upto 2019
+Vintage seems to have year 7200, so we filtered all data up to 2019
 ``` {r}
 wines <- wines %>%
   filter(vintage<2019)
 ```
+
 # Data Exploration
+Before, conducting any detailed analysis of our dataset looked at a quiz summary of dataset
+```{r}
+summary(wines)
+```
 
 ## Univariate Exploration
+To better understand the distribution of our data we did some simple univariate visualization based on certain fields.
+
 ### Alcohol Amount
-TODO: EXPLAIN GRAPH AND WHAT WE ARE DOING HERE (OSAKI)
+The graph below depicts the distribution of our dataset based on alcohol percentage, `alcohol` . To better understand and visualize the data we categorized the graph based on `rating_category`. Notice, a majority of wines have an alcohol amount between 12-15% and according to [Real Simple]("https://www.realsimple.com/holidays-entertaining/entertaining/food-drink/alcohol-content-wine") wine averages between 11-13 percentage. This leads us to believe our data is an accurate representation of real world.
 ```{r}
 wines %>% 
   group_by(alcohol) %>% 
   ggplot() +
-  geom_histogram(mapping = aes(x = alcohol, fill = rating_category),
-                 na.rm = T,
-                 bins = 50) +
+  geom_histogram(
+    mapping = aes(
+      x = alcohol, 
+      fill = rating_category),
+    na.rm = TRUE,
+    bins = 50) +
   scale_x_continuous(
-    name = "Alchohol Percentage", 
     breaks = seq(0,25,1), 
-    limits = c(4,22)) #+
-#  scale_fill_fairyfloss() +
-#  theme_fairyfloss() +
-#  theme(plot.background = element_rect("white"))
+    limits = c(4,22)) +
+  labs(
+    title = "Distribution of Alcohol Percentage",
+    x = "Alcohol Percentage",
+    y = "Count",
+    fill = "Category"
+  )
 ```
 
 ### Vintage
-Understanding what vintage the reivewed wines were from.
-```{r}
-wines %>%
-  group_by(vintage) %>%
-  summarise(count = n())
-```
-
-
-TODO: EXPLAIN GRPAHS (IZZY)
+Next, we wanted to see what vintage most of the wines in the dataset were. Again to better understand and visualize the data we categorized the graph based on `rating_category`. Notice, that there is roughly, an equal percentage of each category per vintage further enhancing our confidence in our dataset robustness.
 (Note: Data points before 1990 have been omitted for clarity in visualization)
 ```{r}
 wines %>%
-  group_by(vintage) %>%
   ggplot() +
-  geom_bar(mapping = aes(x=vintage, fill = rating_category),
-           na.rm = T) +
-  scale_x_continuous(breaks = seq(1990,2019,5), 
-                     limits = c(1990,2019)) +
-  labs(x = "Vintage", y = "Count") #+
-  #theme_fairyfloss()
+  geom_bar(
+    mapping = aes(
+      x=vintage, 
+      fill = rating_category),
+    na.rm = TRUE) +
+  scale_x_continuous(
+    breaks = seq(1990,2019,5), 
+    limits = c(1990,2019)) +
+  labs(
+    title = "Distribution of Vintage",
+    x = "Vintage", 
+    y = "Count",
+    fill = "Category")
 ```
 
 ### Winery
-To better understand the number wines per winery, we did a univarite visualization that counts the number of wines per winery showing only 15 winerys to give you an idea what winery has the most selction of wines.
+To better understand the number wines per winery, we did a visualization that counts the number of wines per winery showing only Top 10 winerys to give you an idea what winery has the most selction of wines. Notice, each of the top 10 producers of wine have over 100 different wine labels.
 ```{r}
 wines %>%
   group_by(winery) %>%
-  summarize(count = n()) %>%
+  summarise(count = n()) %>%
   arrange(desc(count)) %>%
-  slice(1:15) %>%
+  slice(1:10) %>%
   ggplot() +
   geom_col(
     mapping = aes(
-      x=count, 
-      y = reorder(winery, count)))
+      x= reorder(winery, count),
+      y = count,
+      fill = winery)) +
+  labs(
+    title = "Distribution of Vintage (Top 10)",
+    x = "Vintage", 
+    y = "Count") +
+  theme(legend.position = "none") +
+  coord_flip()
 ```
 
 ### Province
-To better understand the number wines per province, we did a univarite visualization that counts the number of wines per province showing only the top 10 provinces with the most wines. This can give the reader an idea where their wine will most likely be made with California standing out as a clear leader.
+To better understand the number wines per province, we did a visualization that counts the number of wines per province showing only the top 10 provinces with the most wines. This can give the reader an idea where their wine will most likely be made with California standing out as a clear leader.
 ```{r}
 wines %>% 
   group_by(province) %>% 
@@ -200,33 +221,35 @@ wines %>%
   arrange(desc(count)) %>% 
   slice(1:10) %>% 
   ggplot()+
-  geom_col(aes(x = count, y = reorder(province, count)))
+  geom_col(
+    mapping = aes(
+      x = reorder(province, count), 
+      y = count,
+      fill = province)) +
+  labs(
+    title = "Distribution of Province (Top 10)",
+    x = "Province", 
+    y = "Count") +
+  theme(legend.position = "none") +
+  coord_flip()
 ```
 
 ### Price
-Calculating the Mean, Standard Deviation, Minimum, and Max Price for the entire wine dataset and printing the values.
-```{r}
-mean_price <- mean(wines$price, na.rm = TRUE)
-sd_price <- sd(wines$price, na.rm = TRUE)
-min_price <- min(wines$price, na.rm = TRUE)
-max_price <- max(wines$price, na.rm = TRUE)
-
-print(paste("Mean Price:", mean_price))
-print(paste("SD Price:", sd_price))
-print(paste("Min Price:", min_price))
-print(paste("Max Price:", max_price))
-```
-
-TODO: Vamsi
+Next, we did a 
 ```{r}
 wines %>% 
-  filter(price < 1000) %>% 
-  group_by(price) %>% 
-  summarise(count = n()) %>% 
+  filter(price < 400) %>% 
   ggplot() +
   geom_histogram(
-    mapping = aes(x=price), 
-    na.rm = T) 
+    mapping = aes(
+      x=price, 
+      fill = rating_category),
+    binwidth = 15) +
+  labs(
+    title = "Distribution of Price",
+    x = "Price", 
+    y = "Count",
+    fill = "Category")
 ```
 
 ###  Points 
