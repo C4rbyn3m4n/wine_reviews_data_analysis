@@ -1,7 +1,7 @@
 ---
 title: "Exploring and Analyizing Wine Enthusiast Reviews"
 output: 
-  html_book:
+  html_notebook:
     toc: true
     toc_float: true
     theme: united
@@ -175,7 +175,7 @@ wines %>%
     title = "Distribution of Alcohol Percentage",
     x = "Alcohol Percentage",
     y = "Count",
-    fill = "Category"
+    fill = "Rating Category"
   )
 ```
 
@@ -198,7 +198,7 @@ wines %>%
     title = "Distribution of Vintage",
     x = "Vintage", 
     y = "Count",
-    fill = "Category")
+    fill = "Rating Category")
 ```
 
 ### Winery
@@ -244,9 +244,11 @@ wines %>%
   theme(legend.position = "none") +
   coord_flip()
 ```
+### Category
+
 
 ### Price
-Next, we wanted to visualize the distribution of price in our dataset. To better understand and visualize the data we categorized the graph based on `rating_category`. Notice, a majority of wines are \$50 and below with the most common being between \$12 - \$25. Again, this accurately represents the real world as stated by [Vivino](https://www.vivino.com/wine-news/how-much-does-a-good-bottle-of-wine-cost) the average price for good bottle of red/white wine is ~\$15 and ~\$28 for a very good bottle. (CAUTION: The Vivino prices denoted were simply an average for red/white wines average costs. This was done to simply generalize the information to do a more accurate apples to apples comparsion. Also, this limited to red/white wine and does not accurately include other types)
+Next, we wanted to visualize the distribution of price in our dataset. To better understand and visualize the data we categorized the graph based on `rating_category`. Notice, a majority of wines are \$50 and below with the most common being between \$12 - \$25. Again, this accurately represents the real world as stated by [Vivino](https://www.vivino.com/wine-news/how-much-does-a-good-bottle-of-wine-cost) the average price for good bottle of red/white wine is ~\$15 and ~\$28 for a very good bottle. (CAUTION: The Vivino prices denoted were simply an average for red/white wines average costs. This was done to simply generalize the information to do a simple comparsion. Also, this limited to red/white wine and does not accurately include other types)
 
 (Note: Data points above $400 have been omitted for clarity in visualization)
 ```{r}
@@ -262,7 +264,7 @@ wines %>%
     title = "Distribution of Price",
     x = "Price", 
     y = "Count",
-    fill = "Category")
+    fill = "Rating Category")
 ```
 
 ###  Points 
@@ -308,9 +310,7 @@ wines %>%
 
 
 ### Price by Points
-To understand the price distribution by points, we did a multivarite visualization that coorelates taster names based on the average wine points as identified  by the x-intercept. This give you the reader an idea of how some reviewers correlate to the overall average.
-
-Notice, the data is "stacked" and the socres range from 80-100
+To understand the price distribution by points, we did a multivarite visualization that creates a scatter plot of the wines based on points and price. Then, we added a smooth transformation on identify trends. Notice, the data is "stacked" and the socres range from 80-100
 ```{r}
 wines %>% 
   ggplot() +
@@ -318,44 +318,69 @@ wines %>%
     mapping = aes(
       x = points, 
       y = price, 
-      color = rating_category),
+      color = category),
     na.rm = TRUE,
     alpha = 0.2) +
   labs(
     title = "Price by Points", 
     x = "Points",
-    y = "Price") +
+    y = "Price",
+    fill = "Wine Category") +
   geom_smooth(
     mapping = aes(
       x = points, 
-      y = price)) +
-  theme(legend.position = "none")
+      y = price),
+    na.rm = TRUE)
 ```
 
-TODO EXPLAIN VAMSI
+Since, there are multiple outliers and the visualization is clustered. By preforming a log on all the prices we can reduce the skewness of the visualization. Notice, as quality of wine increases price increases exponentially.
 ```{r}
 wines %>% 
   ggplot() +
-  geom_point(mapping = (aes(x = points, y = log(price), color = rating_category)), na.rm = T, alpha = 0.15) +
-  labs(title = "log(Price) by Points", x = "Points", y = "log(Price)") +
-  geom_smooth(mapping = (aes(x = points, y = log(price))))
+  geom_point(
+    mapping = aes(
+      x = points, 
+      y = log(price), 
+      color = category),
+    na.rm = TRUE,
+    alpha = 0.2) +
+  labs(
+    title = "log(Price) by Points", 
+    x = "Points",
+    y = "log(Price)",
+    color = "Wine Category") +
+  geom_smooth(
+    mapping = aes(
+      x = points, 
+      y = log(price)),
+    na.rm = TRUE)
 ```
 
-### Category
-TODO EXPLAIN IZZY
-This 
+#### Group by Wine Category
+Next, our group wanted to do a more granular analysis by looking at how the price varies by points grouped by wine category. Notice, all the price go up as points go up, but the growth rates are different per wine category.
 ```{r}
 wines %>% 
-  group_by(points) %>% 
-  filter(price < 1000) %>% 
   ggplot() +
-  geom_point(mapping = aes(x=points, y = price, color = category), 
-             na.rm = T) +
-  facet_wrap(~ category) +
-  scale_color_fairyfloss() +
-  theme_minimal()
+  geom_point(
+    mapping = aes(
+      x = points, 
+      y = log(price), 
+      color = category),
+    alpha =0.2,
+    na.rm = TRUE) +
+  geom_smooth(
+    mapping = aes(
+      x = points, 
+      y = log(price)),
+    na.rm = TRUE) +
+  facet_wrap(~category) +
+  labs(
+    title = "log(Price) by Points", 
+    x = "Points",
+    y = "log(Price)")+
+  theme_minimal()+
+  theme(legend.position = "none" )
 ```
-
 
 
 # Data Analysis
