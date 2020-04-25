@@ -304,6 +304,7 @@ wines %>%
 
 
 # Data Analysis
+To determine the best province for wine by points, we averaged the points of all wines per province with a sample size greater than 30 and returned the top 10 with standard error. Standard error helps us determine the spread of the dataset. The graph below shows top 10 best provinces by average points with respect to standard error.
 
 ## Which province has the best wine?
 TODO EXPLAIN OSAKI
@@ -324,8 +325,8 @@ wines %>%
       xmin = avg_points_prov - std_points_prov_err, 
       xmax = avg_points_prov + std_points_prov_err
       ),
-    width = 0.2
-  )
+    width = 0.2)+
+    labs(y = 'Province', x = "Average Points", title = "Average Points By Province (Top 10)")
 ```
 
 ## Which wine variety is the best?
