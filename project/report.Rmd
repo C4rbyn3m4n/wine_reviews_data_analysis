@@ -402,14 +402,15 @@ wines %>%
 
 
 # Data Analysis
-Now that we fully understand the dataset we are working with we plan to answer some research questions proposed by the team.
+Now that we fully understand the dataset we are working with. We plan to answer some research questions proposed by the team.
 
 ## What is the best wine?
 A easy way to determine the best wine is by simply finding the top 10 wines.
 ```{r}
 wines %>%
   arrange(desc(points)) %>%
-  slice(1:10)
+  slice(1:10) %>%
+  select(title,price, points,rating_category, norm_points)
 ```
 
 However, this does not account for the tasters bias. Instead, our group "normalized" the points based on each taster based on the number of standard deviations an wines is from the raters average. For example, Taster A could give a wine 100 but has an avgerage rating score of 95 with a standard deviation of 5. Whereas, Taster B could give a wine 91 and have an average score of 87 with a standard deviation of 2. Although, the wine tasted by Taster A got a perfect 100 score, Taster B's wine was much "better" wine since it was 2 standard deviations from the tasters avgerage compared to 1 standard deviation of the other wine.
@@ -418,7 +419,8 @@ Looking at the `norm_points` these are the top 10 best wines
 ```{r}
 wines %>%
   arrange(desc(norm_points)) %>%
-  slice(1:10)
+  slice(1:10)%>%
+  select(title,price, points,rating_category, norm_points)
 ```
 
 ## What is the best value wine?
@@ -514,18 +516,27 @@ wines %>%
   coord_flip()
 ```
 
-## How much are people willing to pay?
-TODO IZZY
+## Jess from New Girl’s favorite wine?
+Sounds like a silly question, but take a closer look and you'll find an interesting question within it: "Can we determine the best value wine based on how much people are willing to pay?"  WE SURE CAN!
+
 ```{r}
 user_price <- readline(prompt = "How much are you willing to spend on a bottle?")
 user_price <- as.integer(user_price)
 
 wines %>% 
-  filter(price <= user_price) %>% 
-  arrange(desc(points)) %>% 
-  select(title, price, points)
+  filter(price <= user_price) %>%
+  arrange(desc(norm_points/price)) %>%
+  slice(1:10)%>%
+  select(title, price, points,rating_category, norm_points)
 ```
 
+Now back to the orignal question with Jess
+
+
+```{r}
+wines %>%
+  filter(price < 11)
+```
 
 # Conclusion
 
