@@ -261,7 +261,7 @@ wines %>%
     title = "Distribution of Wine Category",
     x = "Wine Category", 
     y = "Count",
-    fill = "Rating Category")+
+    fill = "Rating Category") +
   coord_flip()
 ```
 
@@ -343,7 +343,7 @@ wines %>%
     title = "Price by Points", 
     x = "Points",
     y = "Price",
-    fill = "Wine Category") +
+    color = "Wine Category") +
   geom_smooth(
     mapping = aes(
       x = points, 
