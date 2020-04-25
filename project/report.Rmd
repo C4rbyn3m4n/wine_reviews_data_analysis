@@ -1,7 +1,7 @@
 ---
 title: "Exploring and Analyizing Wine Enthusiast Reviews"
 output: 
-  html_notebook:
+  html_book:
     toc: true
     toc_float: true
     theme: united
@@ -35,44 +35,7 @@ percentage <- 5
 wine_sample<- sample_n(wines, percentage/100*nrow(wines))
 ```
 
-## Split Taster Data
-To make our dataframes more managable we split reduntant information about the tasters into a new dataframe.
-```{r}
-tasters <- wines %>%
-  select(taster_name, taster_twitter_handle) %>% 
-  unique()
-tasters
-```
-
-
-Drop `taster_twitter_handle` in wines dataframe
-```{r}
-wines <- wines %>%
-  select(-taster_twitter_handle)
-head(wines)
-```
-## Create a Reviewer Profile
-
-Each reviewer has there own bias. In order to offset that we made a "profile" for each reviewer, This profile allows us to later normalize the wine points for more robust apples to apples comparison. Each reviewers profile includes additional characteristics like: 
-- `avg_points` which is the avgerage of all the reviewers scores
-- `sd_points` which is the standard deviation of all the reviewers scores
-- `var_points` which is the variance of all the reviewers scores
-- `reviews` which is the number of reviews conducted
-```{r}
-taster_rating_profile <- wines %>%
-  group_by(taster_name) %>%
-  summarize(
-    avg_points = mean(points),
-    sd_points = sd(points),
-    var_points = var(points),
-    reviews = n()
-  )
-
-tasters <- inner_join(tasters, taster_rating_profile, by = "taster_name")
-head(tasters)
-```
-
-### Add Rating Classification
+## Rating Classification
 
 Wines are normally classified in categories as found on the [website](https://www.winemag.com/2010/04/09/you-asked-how-is-a-wines-score-determined/). To create a more rich dataset we added the field `rating_category` determined as:
 
@@ -113,8 +76,52 @@ wines<- wines %>%
   mutate(rating_category = rating_category(points))
 head(wines)
 ```
+## Create a Reviewer Profile
 
-## Add Adjusted Points
+### Split Taster Data
+To make our dataframes more managable we split reduntant information about the tasters into a new dataframe.
+```{r}
+tasters <- wines %>%
+  select(taster_name, taster_twitter_handle) %>% 
+  unique()
+tasters
+```
+
+
+Drop `taster_twitter_handle` in wines dataframe
+```{r}
+wines <- wines %>%
+  select(-taster_twitter_handle)
+head(wines)
+```
+
+### Create Reviewer Metrics
+Each reviewer has there own bias. In order to offset that we made a "profile" for each reviewer, This profile allows us to later normalize the wine points for more robust apples to apples comparison. Each reviewers profile includes additional characteristics like: 
+
+- `avg_points` which is the avgerage of all the reviewer's scores
+
+- `sd_points` which is the standard deviation of all the reviewer's scores
+
+- `var_points` which is the variance of all the reviewer's scores
+
+- `reviews` which is the number of reviews conducted
+
+```{r}
+taster_rating_profile <- wines %>%
+  group_by(taster_name) %>%
+  summarize(
+    avg_points = mean(points),
+    sd_points = sd(points),
+    var_points = var(points),
+    reviews = n()
+  )
+
+tasters <- inner_join(tasters, taster_rating_profile, by = "taster_name")
+head(tasters)
+```
+
+
+## Normalized Points
 
 Since, each reviewer has a different bias we created a normalized metric, `norm_points`, by looking at the number of standard deviatioins a wine is from the reviewer's `avg_points`. This gives use a more accurate representation of which which wines are "better" than the rest.
 
@@ -131,6 +138,9 @@ head(wines)
 ```
 
 ## Data Sanitation
+Here we do hard checks to clean data to ensure integrity of our data.
+\
+\
 Vintage seems to have year 7200, so we filtered all data up to 2019
 ``` {r}
 wines <- wines %>%
@@ -138,16 +148,16 @@ wines <- wines %>%
 ```
 
 # Data Exploration
-Before, conducting any detailed analysis of our dataset looked at a quiz summary of dataset
+Before, conducting any detailed analysis of our dataset, we looked at a quick summary of the dataset
 ```{r}
 summary(wines)
 ```
 
 ## Univariate Exploration
-To better understand the distribution of our data we did some simple univariate visualization based on certain fields. Before, doing a multivariate analysis and answering our research questions we first want to ensure our dataset is robust and an accurate representation of the real world.
+To better understand the distribution of our data we did some simple univariate visualization based on certain fields. Additionally, before doing a multivariate analysis and answering our research questions we first want to ensure our dataset is robust and an accurate representation of the real world.
 
 ### Alcohol Amount
-The graph below depicts the distribution of our dataset based on alcohol percentage, `alcohol` . To better understand and visualize the data we categorized the graph based on `rating_category`. Notice, a majority of wines have an alcohol amount between 12-15% and according to [Real Simple]("https://www.realsimple.com/holidays-entertaining/entertaining/food-drink/alcohol-content-wine") wine averages between 11-13 percentage. This leads us to believe our data is an accurate representation of real world.
+The visualization below depicts the distribution of our dataset based on alcohol percentage, `alcohol` . To better understand and visualize the data we categorized the graph based on `rating_category`. Notice, a majority of wines have an alcohol amount between 12%-15% and according to [Real Simple]("https://www.realsimple.com/holidays-entertaining/entertaining/food-drink/alcohol-content-wine") wine alcholic content averages between 11%-13%. This leads us to believe our data is an accurate representation of the real world.
 ```{r}
 wines %>% 
   group_by(alcohol) %>% 
@@ -170,7 +180,8 @@ wines %>%
 ```
 
 ### Vintage
-Next, we wanted to see what vintage most of the wines in the dataset were. Again to better understand and visualize the data we categorized the graph based on `rating_category`. Notice, that there is roughly, an equal percentage of each category per vintage further enhancing our confidence in our dataset robustness.
+Next, we wanted to see what vintage most of the wines in the dataset were. Again to better understand and visualize the data we categorized the graph based on `rating_category`. Notice, that there is roughly, an equal percentage of each rating category per vintage.
+
 (Note: Data points before 1990 have been omitted for clarity in visualization)
 ```{r}
 wines %>%
@@ -205,8 +216,8 @@ wines %>%
       y = count,
       fill = winery)) +
   labs(
-    title = "Distribution of Vintage (Top 10)",
-    x = "Vintage", 
+    title = "Distribution of Winery (Top 10)",
+    x = "Winery", 
     y = "Count") +
   theme(legend.position = "none") +
   coord_flip()
@@ -235,7 +246,8 @@ wines %>%
 ```
 
 ### Price
-Next, we wanted to visualize the distribution of price in our dataset. To better understand and visualize the data we categorized the graph based on `rating_category`.Notice, a majority of wines are \$50 and below with the most common being between \$12 - \$25. Again, this accurately represents the real world as stated by [Vivino](https://www.vivino.com/wine-news/how-much-does-a-good-bottle-of-wine-cost) the average price for good bottle of red/white wine is ~\$15 and ~\$28 for a very good bottle. (CAUTION: The Vivino prices denoted were simply an average for red/white wines average costs. This was done to simply generalize the information to do a more accurate apples to apples comparsion. Also, this limited to red/white wine and does not accurately include other types)
+Next, we wanted to visualize the distribution of price in our dataset. To better understand and visualize the data we categorized the graph based on `rating_category`. Notice, a majority of wines are \$50 and below with the most common being between \$12 - \$25. Again, this accurately represents the real world as stated by [Vivino](https://www.vivino.com/wine-news/how-much-does-a-good-bottle-of-wine-cost) the average price for good bottle of red/white wine is ~\$15 and ~\$28 for a very good bottle. (CAUTION: The Vivino prices denoted were simply an average for red/white wines average costs. This was done to simply generalize the information to do a more accurate apples to apples comparsion. Also, this limited to red/white wine and does not accurately include other types)
+
 (Note: Data points above $400 have been omitted for clarity in visualization)
 ```{r}
 wines %>% 
@@ -254,38 +266,69 @@ wines %>%
 ```
 
 ###  Points 
-Next, we wanted to visualize the distribution of points in our dataset. Notice, here that a majority of wines recieve a score between 87 and 90. Which is accurate to the information provided on ()[]
+Next, we wanted to visualize the distribution of points in our dataset. Notice, here that a majority of wines recieve a score between 87 and 90. Which is accurate to the information provided on [Wine Searcher]("https://www.wine-searcher.com/critics-17-wine+enthusiast") which states 50% of the scores fall between 86-90 point from Wine Enthusiast ratings.
+
+(Note: We our dataset was reterived from the Wine Enthusiast website)
 ```{r}
 wines %>%
   ggplot() +
   geom_histogram(
     mapping = aes(x=points),
-    bins = 20)
+    bins = 20)+
+  labs(
+    title = "Distribution of Points",
+    x = "Points", 
+    y = "Count")
 ```
 
 ## Multivariate Exploration
+Now, that we have a better understanding of our data and we know it is a accuare representation of the real world we can preform an more detailed anaylsis using multiple variables.
 
-## Taster by Points
-To help you understand the point distribution by reviewers, we did a multivarite visualization that coorelates some taster names based on the average wine points as identified  by the x-intercept. This give you the reader an idea of how some reviewers correlate to the overall average.
+### Points by Taster
+To understand the point distribution by tasters, we did a multivarite visualization that coorelates taster names based on the average wine points as identified  by the x-intercept. This gives the reader an idea of how some reviewers correlate to the overall average.
+
+(Note: The "blank" represents unknown reviewers. We assumed the reviewers not named have not rated a signficant amount of wines and can be grouped into a singular reviewer)
 ```{r}
 wines %>%
   ggplot() +
-  geom_boxplot(aes(y=taster_name, x=points, color = taster_name)) +
-  geom_vline(xintercept = mean(wines$points)) +
-  theme(
-    legend.position = "none")
+  geom_boxplot(
+    mapping = aes(
+      x=taster_name,
+      y=points, 
+      color = taster_name)) +
+  geom_hline(yintercept = mean(wines$points)) +
+  theme(legend.position = "none")+
+  labs(
+    title = "Points by Taster",
+    x="Taster Name",
+    y="Points"
+  )+
+  coord_flip()
 ```
 
 
-## Price by Points
-TODO EXPLAIN VAMSI
-Notice the data is "stacked" and the socres range from 80-100
+### Price by Points
+To understand the price distribution by points, we did a multivarite visualization that coorelates taster names based on the average wine points as identified  by the x-intercept. This give you the reader an idea of how some reviewers correlate to the overall average.
+
+Notice, the data is "stacked" and the socres range from 80-100
 ```{r}
 wines %>% 
   ggplot() +
-  geom_point(mapping = (aes(x = points, y = price, color = rating_category)), na.rm = T, alpha = 0.2) +
-  labs(title = "Price by Points", x = "Points", y = "Price") +
-  geom_smooth(mapping = (aes(x = points, y = price))) +
+  geom_point(
+    mapping = aes(
+      x = points, 
+      y = price, 
+      color = rating_category),
+    na.rm = TRUE,
+    alpha = 0.2) +
+  labs(
+    title = "Price by Points", 
+    x = "Points",
+    y = "Price") +
+  geom_smooth(
+    mapping = aes(
+      x = points, 
+      y = price)) +
   theme(legend.position = "none")
 ```
 
