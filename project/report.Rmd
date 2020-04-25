@@ -144,7 +144,7 @@ summary(wines)
 ```
 
 ## Univariate Exploration
-To better understand the distribution of our data we did some simple univariate visualization based on certain fields.
+To better understand the distribution of our data we did some simple univariate visualization based on certain fields. Before, doing a multivariate analysis and answering our research questions we first want to ensure our dataset is robust and an accurate representation of the real world.
 
 ### Alcohol Amount
 The graph below depicts the distribution of our dataset based on alcohol percentage, `alcohol` . To better understand and visualize the data we categorized the graph based on `rating_category`. Notice, a majority of wines have an alcohol amount between 12-15% and according to [Real Simple]("https://www.realsimple.com/holidays-entertaining/entertaining/food-drink/alcohol-content-wine") wine averages between 11-13 percentage. This leads us to believe our data is an accurate representation of real world.
@@ -235,7 +235,8 @@ wines %>%
 ```
 
 ### Price
-Next, we did a 
+Next, we wanted to visualize the distribution of price in our dataset. To better understand and visualize the data we categorized the graph based on `rating_category`.Notice, a majority of wines are \$50 and below with the most common being between \$12 - \$25. Again, this accurately represents the real world as stated by [Vivino](https://www.vivino.com/wine-news/how-much-does-a-good-bottle-of-wine-cost) the average price for good bottle of red/white wine is ~\$15 and ~\$28 for a very good bottle. (CAUTION: The Vivino prices denoted were simply an average for red/white wines average costs. This was done to simply generalize the information to do a more accurate apples to apples comparsion. Also, this limited to red/white wine and does not accurately include other types)
+(Note: Data points above $400 have been omitted for clarity in visualization)
 ```{r}
 wines %>% 
   filter(price < 400) %>% 
