@@ -1,6 +1,6 @@
 # Data Description: Wine Reviews Dataset 2
 
-The dataset is from  [Sanyam Kapoor](https://github.com/activatedgeek/winemag-dataset). It contains 250,000 reviews of wines from the website [Winemag](https://www.wineenthusiast.com/).
+The dataset is from  [Sanyam Kapoor](https://github.com/activatedgeek/winemag-dataset). It contains 250,000 reviews of wines from the website [WineEnthusiast](https://www.wineenthusiast.com/).
 
 The character attributes are:
 

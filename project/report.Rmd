@@ -6,6 +6,17 @@ output:
     toc_float: true
     theme: united
 ---
+# Introduction
+Turning 21 is a milestone in everyone's life and usually, people celebrate it with a family dinner and glass of wine. But, how does one find the best wine considering that person has never had alcohol. 
+
+- Do we get the best rated/most expensive bottle? (Too bad college students are poor) 
+- Do we try to find the best value wine? (Ballin' on a budget)
+
+- Or do follow Jess from New Girl? (Obviously, the only option)
+
+Let's take a deep dive and answer these pressing questions!
+
+Our project investigates ~120,000 wine reviews with characteristics such as variety, vintage, winery, price, etc. This is our Final Project for Intro to Data Science (Spring 2020) class, and we thought it was a bit too easy, so we decided to expand it and take it a step further.
 
 # Prerequisites
 
@@ -19,14 +30,14 @@ library(scales)
 
 # Dataset
 
-Import processed data, which can be found [here](https://github.com/C4rbyn3m4n/wine_reviews_data_analysis/blob/master/data/processed_data/preprocessing.nb.html). Note:
+Import processed data, which can be found [here](https://github.com/C4rbyn3m4n/wine_reviews_data_analysis/blob/master/data/processed_data/preprocessing.nb.html). Note: This file also credits our dataset curators and outlines our data cleaning pipeline.
 
 ```{r}
 #read preprocessed data
 wines <- read.csv(file = '../data/processed_data/wines.csv')
 ```
 
-Get sample of dataset
+Get a sample of the dataset for easy testing. However, for our final report, we ran all of our code on the full wines dataset to get more accurate results.
 ```{r}
 #set seed value to birthday of Ricardo Rodriguez, American wrestler and ring announcer and Dr. Reinaldo (Rei) Sanchez-Arias
 set.seed(19630217)
@@ -38,7 +49,7 @@ wine_sample<- sample_n(wines, percentage/100*nrow(wines))
 
 ## Rating Classification
 
-Wines are normally classified in categories as found on the [website](https://www.winemag.com/2010/04/09/you-asked-how-is-a-wines-score-determined/). To create a more rich dataset we added the field `rating_category` determined as:
+Wines are normally classified in categories as found on this [website](https://www.winemag.com/2010/04/09/you-asked-how-is-a-wines-score-determined/). To create a more rich dataset we added the field `rating_category` determined as:
 
 |Category  | Rating  | Description                                            |
 |----------|---------|--------------------------------------------------------|
@@ -49,7 +60,7 @@ Wines are normally classified in categories as found on the [website](https://ww
 |Good	     |  83-86	 | Suitable for everyday consumption; often good value.   |
 |Acceptable|	80-82	 | Can be employed in casual, less-critical circumstances |
 
-Also, this allows to take a quantitative data and turn it into qualitative data, which can be used for data visualization later. 
+This allows to take a quantitative data and turn it into qualitative data, which can be used for data visualization later. 
 
 ```{r}
 # function to add rating
@@ -80,6 +91,7 @@ wines<- wines %>%
 head(wines)
 ```
 ## Create a Reviewer Profile
+Each reviewer has there own bias. In order to offset that we made a "profile" for each reviewer. This profile allows us to later normalize the wine points for more robust apples to apples comparison.
 
 ### Split Taster Data
 To make our dataframes more managable we split reduntant information about the tasters into a new dataframe.
@@ -91,7 +103,7 @@ tasters
 ```
 
 
-Drop `taster_twitter_handle` in wines dataframe
+Drop `taster_twitter_handle` in wines dataframe to reduce reduntant information.
 ```{r}
 wines <- wines %>%
   select(-taster_twitter_handle)
@@ -99,9 +111,9 @@ head(wines)
 ```
 
 ### Create Reviewer Metrics
-Each reviewer has there own bias. In order to offset that we made a "profile" for each reviewer, This profile allows us to later normalize the wine points for more robust apples to apples comparison. Each reviewers profile includes additional characteristics like: 
+Each reviewers profile includes the following metrics to create a profile: 
 
-- `avg_points` which is the avgerage of all the reviewer's scores
+- `avg_points` which is the average of all the reviewer's scores
 
 - `sd_points` which is the standard deviation of all the reviewer's scores
 
@@ -125,8 +137,7 @@ head(tasters)
 
 
 ## Normalized Points
-
-Since, each reviewer has a different bias we created a normalized metric, `norm_points`, by looking at the number of standard deviatioins a wine is from the reviewer's `avg_points`. This gives use a more accurate representation of which which wines are "better" than the rest.
+As mentioned, each reviewer has a different bias. To offset this, we created a normalized metric, `norm_points`, by looking at the number of standard deviations a wine is from the reviewer's `avg_points`. This gives us a more accurate representation of which wines are "better" than the rest.
 
 ```{r}
 normalize_points <- function(data){
@@ -141,7 +152,7 @@ head(wines)
 ```
 
 ## Data Sanitation
-Here we do hard checks to clean data to ensure integrity of our data.
+To ensure the integrity of our data, we perform some hard checks that could have been missed during our data pre-processing.
 \
 \
 Vintage seems to have year 7200, so we filtered all data up to 2019
@@ -157,10 +168,10 @@ summary(wines)
 ```
 
 ## Univariate Exploration
-To better understand the distribution of our data we did some simple univariate visualization based on certain fields. Additionally, before doing a multivariate analysis and answering our research questions we first want to ensure our dataset is robust and an accurate representation of the real world.
+To better understand the distribution of our data, we did some simple univariate visualization based on specific fields. Additionally, before doing a multivariate analysis and answering our research questions, we first want to ensure our dataset is robust and an accurate representation of the real world.
 
 ### Alcohol Amount
-The visualization below depicts the distribution of our dataset based on alcohol percentage, `alcohol` . To better understand and visualize the data we categorized the graph based on `rating_category`. Notice, a majority of wines have an alcohol amount between 12%-15% and according to [Real Simple]("https://www.realsimple.com/holidays-entertaining/entertaining/food-drink/alcohol-content-wine") wine alcholic content averages between 11%-13%. This leads us to believe our data is an accurate representation of the real world.
+The visualization below depicts the distribution of our dataset based on alcohol percentage, `alcohol`. To better understand and visualize the data, we categorized the graph based on `rating_category`. Notice, a majority of wines have an alcohol amount between 12%-15%, and according to [Real Simple](https://www.realsimple.com/holidays-entertaining/entertaining/food-drink/alcohol-content-wine), wine alcoholic content averages between 11%-13%. This leads us to believe our data is an accurate representation of the real world.
 ```{r}
 wines %>% 
   group_by(alcohol) %>% 
@@ -183,7 +194,7 @@ wines %>%
 ```
 
 ### Vintage
-Next, we wanted to see what vintage most of the wines in the dataset were. Again to better understand and visualize the data we categorized the graph based on `rating_category`. Notice, that there is roughly, an equal percentage of each rating category per vintage.
+Next, we wanted to see what vintage most of the wines in the dataset were. Again to better understand and visualize the data, we categorized the graph based on `rating_category`. Notice that there is roughly an equal percentage of each rating category per vintage.
 
 (Note: Data points before 1990 have been omitted for clarity in visualization)
 ```{r}
@@ -205,7 +216,7 @@ wines %>%
 ```
 
 ### Winery
-To better understand the number wines per winery, we did a visualization that counts the number of wines per winery showing only Top 10 winerys to give you an idea what winery has the most selction of wines. Notice, each of the top 10 producers of wine have over 100 different wine labels.
+To better understand the number wines per winery, we did a visualization that counts the number of wines per winery showing only Top 10 wineries to give you an idea of what winery has the most selection of wines. Notice, each of the top 10 producers of wine have over 100 different wine labels.
 ```{r}
 wines %>%
   group_by(winery) %>%
@@ -227,7 +238,7 @@ wines %>%
 ```
 
 ### Province
-To better understand the number wines per province, we did a visualization that counts the number of wines per province showing only the top 10 provinces with the most wines. This can give the reader an idea where their wine will most likely be made with California standing out as a clear leader.
+To better understand the number of wines per province, we did a visualization that counts the number of wines per province, showing only the top 10 provinces with the most wines. This can give the reader an idea where their wine will most likely be made with California standing out as a clear leader.
 ```{r}
 wines %>% 
   group_by(province) %>% 
@@ -248,7 +259,7 @@ wines %>%
   coord_flip()
 ```
 ### Wine Category
-Next, we wanted to visualize th distribution of different wine categories in our dataset.To better understand and visualize the data we categorized the graph based on `rating_category`. Notice, a majority of the wines are red or white wines
+Next, we wanted to visualize the distribution of different wine categories in our dataset. To better understand and visualize the data, we categorized the graph based on `rating_category`. Notice, a majority of the wines are red or white wines.
 
 ```{r}
 wines %>% 
@@ -266,7 +277,7 @@ wines %>%
 ```
 
 ### Price
-Next, we wanted to visualize the distribution of price in our dataset. To better understand and visualize the data we categorized the graph based on `rating_category`. Notice, a majority of wines are \$50 and below with the most common being between \$12 - \$25. Again, this accurately represents the real world as stated by [Vivino](https://www.vivino.com/wine-news/how-much-does-a-good-bottle-of-wine-cost) the average price for good bottle of red/white wine is ~\$15 and ~\$28 for a very good bottle. (CAUTION: The Vivino prices denoted were simply an average for red/white wines average costs. This was done to simply generalize the information to do a simple comparsion. Also, this limited to red/white wine and does not accurately include other types)
+Next, we wanted to visualize the distribution of price in our dataset. To better understand and visualize the data, we categorized the graph based on `rating_category`. Notice, a majority of wines are \$50 and below, with the most common being between \$12 - \$25. Again, this accurately represents the real world. As stated by [Vivino](https://www.vivino.com/wine-news/how-much-does-a-good-bottle-of-wine-cost), the average price for a good bottle of red/white wine is ~\$15 and ~\$28 for a very good bottle. (CAUTION: The Vivino prices denoted were simply an average for red/white wines average costs. This was done to generalize the information to make a simple comparison. Also, this limited to red/white wine and does not accurately include other types, which are included within our dataset)
 
 (Note: Data points above $400 have been omitted for clarity in visualization)
 ```{r}
@@ -286,7 +297,7 @@ wines %>%
 ```
 
 ###  Points 
-Next, we wanted to visualize the distribution of points in our dataset. Notice, here that a majority of wines recieve a score between 87 and 90. Which is accurate to the information provided on [Wine Searcher]("https://www.wine-searcher.com/critics-17-wine+enthusiast") which states 50% of the scores fall between 86-90 point from Wine Enthusiast ratings.
+Next, we wanted to visualize the distribution of points in our dataset. Notice, here that a majority of wines receive a score between 87 and 90. Which is accurate to the information provided on [Wine Searcher]("https://www.wine-searcher.com/critics-17-wine+enthusiast"), which states 50% of the scores fall between 86-90 point from Wine Enthusiast ratings.
 
 (Note: We our dataset was reterived from the Wine Enthusiast website)
 ```{r}
@@ -302,12 +313,12 @@ wines %>%
 ```
 
 ## Multivariate Exploration
-Now, that we have a better understanding of our data and we know it is a accuare representation of the real world we can preform an more detailed anaylsis using multiple variables.
+Now that we have a better understanding of our data, and we know it is an accurate representation of the real world, we can perform a more detailed analysis using multiple variables.
 
 ### Points by Taster
-To understand the point distribution by tasters, we did a multivarite visualization that coorelates taster names based on the average wine points as identified  by the x-intercept. This gives the reader an idea of how some reviewers correlate to the overall average.
+To understand the point distribution by tasters, we did a multivariate visualization that correlates taster names based on the average wine points as identified by the x-intercept. This gives the reader an idea of how some reviewers correlate to the overall average.
 
-(Note: The "blank" represents unknown reviewers. We assumed the reviewers not named have not rated a signficant amount of wines and can be grouped into a singular reviewer)
+(Note: The “blank” represents unknown reviewers. We assumed the reviewers not named have not rated a significant amount of wines and can be grouped into a singular reviewer)
 ```{r}
 wines %>%
   ggplot() +
@@ -328,7 +339,7 @@ wines %>%
 
 
 ### Price by Points
-To understand the price distribution by points, we did a multivarite visualization that creates a scatter plot of the wines based on points and price. Then, we added a smooth transformation on identify trends. Notice, the data is "stacked" and the socres range from 80-100
+To understand the price distribution by points, we did a multivariate visualization that creates a scatter plot of the wines based on points and price. Then, we added a smooth transformation to identify trends. Notice, the data is stacked, and the scores range from 80-100
 ```{r}
 wines %>% 
   ggplot() +
@@ -351,7 +362,7 @@ wines %>%
     na.rm = TRUE)
 ```
 
-Since, there are multiple outliers and the visualization is clustered. By preforming a log on all the prices we can reduce the skewness of the visualization. Notice, as quality of wine increases price increases exponentially.
+Since there are multiple outliers, and the visualization is clustered. By performing a log on all the prices, we can reduce the skewness of the visualization. Notice, as the quality of wine increases, price increases exponentially.
 ```{r}
 wines %>% 
   ggplot() +
@@ -375,7 +386,7 @@ wines %>%
 ```
 
 #### Group by Wine Category
-Next, our group wanted to do a more granular analysis by looking at how the price varies by points grouped by wine category. Notice, all the price go up as points go up, but the growth rates are different per wine category.
+Next, our group wanted to do a more granular analysis by looking at how the price varies by points grouped by the wine category. Notice, all the prices go up as points go up, but the growth rates are different per wine category.
 ```{r}
 wines %>% 
   ggplot() +
@@ -402,10 +413,10 @@ wines %>%
 
 
 # Data Analysis
-Now that we fully understand the dataset we are working with. We plan to answer some research questions proposed by the team.
+Now that we fully understand the dataset we are working with, we plan to answer some research questions proposed by the team.
 
 ## What is the best wine?
-A easy way to determine the best wine is by simply finding the top 10 wines.
+An easy way to determine the best wine is by simply finding the top 10 wines by rating.
 ```{r}
 wines %>%
   arrange(desc(points)) %>%
@@ -413,7 +424,7 @@ wines %>%
   select(title,price, points,rating_category, norm_points)
 ```
 
-However, this does not account for the tasters bias. Instead, our group "normalized" the points based on each taster based on the number of standard deviations an wines is from the raters average. For example, Taster A could give a wine 100 but has an avgerage rating score of 95 with a standard deviation of 5. Whereas, Taster B could give a wine 91 and have an average score of 87 with a standard deviation of 2. Although, the wine tasted by Taster A got a perfect 100 score, Taster B's wine was much "better" wine since it was 2 standard deviations from the tasters avgerage compared to 1 standard deviation of the other wine.
+However, this does not account for the taster's bias. Instead, our group normalized the points based on each taster based on the number of standard deviations a wine is from the raters average. For example, Taster A could give a wine 100 but has an average rating score of 95 with a standard deviation of 5. Whereas, Taster B could offer a wine 91 and have an average score of 87 with a standard deviation of 2. Although the wine tasted by Taster A got a perfect 100 score, Taster B’s wine was much “better” wine since it was two standard deviations from the tasters average compared to 1 standard deviation of the other wine.
 
 Looking at the `norm_points` these are the top 10 best wines
 ```{r}
@@ -424,7 +435,7 @@ wines %>%
 ```
 
 ## What is the best value wine?
-A simple value metric we can use to determine best value is `points/price`
+A simple value metric we can use to determine best value is `points/price`.
 ```{r}
 wines %>%
   arrange(desc(points/price)) %>%
@@ -441,7 +452,7 @@ wines %>%
 ```
 
 ## Which province has the best wine?
-To determine the best province for wine by points, we averaged the points of all wines per province with a sample size greater than 30 and returned the top 10 with standard error. Notice, how the standard error is low menaing the spread of our data is also low and the average is very accurate.
+To determine the best province for wine by points, we averaged the points of all wines per province with a sample size greater than 30 and returned the top 10 with standard error. Notice how the standard error is low, meaning the spread of our data is also small, and the average is very accurate.
 
 ```{r}
 wines %>% 
@@ -479,7 +490,7 @@ wines %>%
 ```
 
 ## Which wine variety is the best?
-To determine the best variety of wine we use the average point of all wines per variety with a sample size greater than 30. The graph below shows the the top 10 varieties with their respective standard error.
+To determine the best variety of wine, we use the average points of all wines per variety with a sample size greater than 30. The graph below shows the top 10 varieties with their respective standard error.
 
 ```{r}
 wines %>% 
@@ -546,9 +557,15 @@ wines %>%
 As you can see, "Yellow Tail 2015 Pink Bubbles Sparkling (South Australia)" is Jess's type of wine!
 
 # Conclusion
-After all this exploration, we were able to walk away with some insights. We learned that standardizing tasters gives a more accurate overview of what the best wines really are, that point values affect price, and that you're most likely drinking wine from California. In the end, though, this exploration of wine showed us more than just how to design the perfect flight; we learned the importance of data preprocessing, the power of mindful graphics, how to make every ggplot  colorful, and the practicality of the pipe tool. We were able to apply data manipulation and exploration skills such as: filtering, mutating, arranging, greping, or slicing data. Beyond R skills, we learned how to adapt to being a remote team, which was significantly helped with the utilization of GitHub. We feel this report gives a well-rounded display of the tools we were taught throughout the semester, and we were excited to build from that knowledge and integrate other tools as well. 
-
+After all this exploration, we were able to walk away with some insights. We learned that standardizing tasters gives a more accurate overview of what the best wines really are, that point values affect price, and that you're most likely drinking wine from California. In the end, though, this exploration of wine showed us more than just how to design the perfect flight; we learned the importance of data preprocessing, the power of mindful graphics, how to make every ggplot easy to understand for the reader using color, and the practicality of the pipe tool. We were able to apply data manipulation and exploration skills such as filtering, mutating, arranging, greping, and slicing data. Beyond R skills, we learned how to adapt to being a remote team, which was significantly helped with the utilization of GitHub. We feel this report gives a well-rounded display of the tools we were taught throughout the semester, and we were excited to build from that knowledge and integrate other tools as well.
 
 # Future Works
-There is certainly more exploration to be done within this dataset. Integrating more Twitter data with packages such as `rtweet`, we could design the "perfect stereotype" of a wine conisseur by gathering keywords from tweets. Delving into the text mining portion of data science, we could find popular words to describe wine from each review and design artificial reviews. We could take the data we found, build statistical learning models such as a random forest in order to predict prices of wines based of the descriptions; this would be a useful model for new, budding (pun intended) wineries to determine price. Overall, creativity is the only limitation on what other problems we could solve with this dataset.
+There is undoubtedly more exploration to be done within this dataset. 
+Integrating more Twitter data with packages such as `rtweet`, we could design the "perfect stereotype" of a wine connoisseur by gathering keywords from tweets. Delving into the text mining portion of data science, we could find popular words to describe a wine from each review and design artificial reviews. We could take the data we found, build statistical learning models such as a random forest to predict prices of wines based on the descriptions; this would be a useful model for new, budding (pun intended) wineries to determine the price. Additionally, this data is only a fraction of the data found on the Wine Enthusiast website. Overall, creativity is the only limitation on what other problems we could solve with this dataset.
 
+The data used is just a fraction of the data found on the Wine Enthusiast website, the team has created a script to collect additional information on the site, which can be found [here](https://github.com/C4rbyn3m4n/wine_reviews_data_analysis/tree/master/data/scripts) for future expansion.
+
+# Datasets Cited
+Special thanks to [Zack Thoutt](https://www.kaggle.com/zynicide) for providing us with [dataset_1](https://www.kaggle.com/zynicide/wine-reviews) and [Sanyam Kapoor](https://github.com/activatedgeek) for providing us with  [dataset_2](https://github.com/activatedgeek/winemag-dataset).
+ 
+The data we used is available at: [https://github.com/C4rbyn3m4n/wine_reviews_data_analysis/tree/master/data]("https://github.com/C4rbyn3m4n/wine_reviews_data_analysis/tree/master/data")
