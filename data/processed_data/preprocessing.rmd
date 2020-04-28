@@ -13,13 +13,14 @@ library("dplyr")
 # Data Wrangling
 
 ## Read dataset_1
-
+You can find more information on `dataset_1` [here](https://github.com/C4rbyn3m4n/wine_reviews_data_analysis/blob/master/data/raw_data/dataset_1). Special Thanks to [Zack Thoutt](https://www.kaggle.com/zynicide) for creating this dataset for us to use!
 ```{r}
 # read data and drop ID col
 dataset_1 <- read.csv("../raw_data/dataset_1/winemag-data-130k-v2.csv")[-1]
 ```
 
 ## Read dataset_2
+You can find more information on `dataset_2` [here](https://github.com/C4rbyn3m4n/wine_reviews_data_analysis/tree/master/data/raw_data/dataset_2). Special Thanks to  [Sanyam Kapoor](https://github.com/activatedgeek/winemag-dataset) for creating this dataset for us to use!
 
 Combine all the csv files for dataset_2
 ```{r}
@@ -36,7 +37,7 @@ merge_dataframes <- function(dataframe_1, dataframe_2){
 
 # funciton merges all csv files in folder to one dataframe
 combine_data = function(mypath){
-  filenames=list.files(path=mypath, full.names=TRUE)
+  filenames=list.files(path=mypath, full.names=TRUE, pattern="*.csv")
   datalist = lapply(filenames, function(x) readfile(x))
   return(Reduce(f = function(x,y) merge_dataframes(x,y), x = datalist, accumulate = FALSE))
 }
@@ -57,7 +58,7 @@ Visualize joined data
 head(join_wines)
 ```
 
-Clean joined data to remove redundancies
+Clean joined data to remove redundancies fields
 ```{r}
 join_wines_cleaned <- join_wines %>%
   select(country, description, designation=designation.x, points, price, province, region=region_1, subregion=region_2, taster_name, taster_twitter_handle, title, variety, winery=winery.x, alcohol, category, url, vintage)
@@ -77,7 +78,7 @@ head(wines)
 
 # Write to CSV
 
-### Joined uncleaned Data
+### Joined Uncleaned Data
 
 Output uncleaned joined data for others to use
 ```{r}
@@ -93,7 +94,7 @@ write_csv(join_wines_cleaned, "joined_datasets_cleaned.csv")
 
 ### Joined Cleaned Data with relevant categories
 
-Output for easy import later
+Output for easy import later - this is the final dataset we use for our final report.
 ```{r}
 write_csv(wines, "wines.csv")
 ```
