@@ -546,7 +546,9 @@ wines %>%
 As you can see, "Yellow Tail 2015 Pink Bubbles Sparkling (South Australia)" is Jess's type of wine!
 
 # Conclusion
+After all this exploration, we were able to walk away with some insights. We learned that standardizing tasters gives a more accurate overview of what the best wines really are, that point values affect price, and that you're most likely drinking wine from California. In the end, though, this exploration of wine showed us more than just how to design the perfect flight; we learned the importance of data preprocessing, the power of mindful graphics, how to make every ggplot  colorful, and the practicality of the pipe tool. We were able to apply data manipulation and exploration skills such as: filtering, mutating, arranging, greping, or slicing data. Beyond R skills, we learned how to adapt to being a remote team, which was significantly helped with the utilization of GitHub. We feel this report gives a well-rounded display of the tools we were taught throughout the semester, and we were excited to build from that knowledge and integrate other tools as well. 
+
 
 # Future Works
+There is certainly more exploration to be done within this dataset. Integrating more Twitter data with packages such as `rtweet`, we could design the "perfect stereotype" of a wine conisseur by gathering keywords from tweets. Delving into the text mining portion of data science, we could find popular words to describe wine from each review and design artificial reviews. We could take the data we found, build statistical learning models such as a random forest in order to predict prices of wines based of the descriptions; this would be a useful model for new, budding (pun intended) wineries to determine price. Overall, creativity is the only limitation on what other problems we could solve with this dataset.
 
-# Works Cited
