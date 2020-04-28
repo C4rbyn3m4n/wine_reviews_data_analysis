@@ -9,10 +9,10 @@ output:
 # Introduction
 Turning 21 is a milestone in everyone's life and usually, people celebrate it with a family dinner and glass of wine. But, how does one find the best wine considering that person has never had alcohol. 
 
-- Do we get the best rated/most expensive bottle? (Too bad college students are poor) 
-- Do we try to find the best value wine? (Ballin' on a budget)
+- Do they get the best rated/most expensive bottle? (Too bad college students are poor) 
+- Do they try to find the best value wine? (Ballin' on a budget)
 
-- Or do follow Jess from New Girl? (Obviously, the only option)
+- Or do they follow Jess from New Girl? (Obviously, the only option)
 
 Let's take a deep dive and answer these pressing questions!
 
@@ -568,4 +568,4 @@ The data used is just a fraction of the data found on the Wine Enthusiast websit
 # Datasets Cited
 Special thanks to [Zack Thoutt](https://www.kaggle.com/zynicide) for providing us with [dataset_1](https://www.kaggle.com/zynicide/wine-reviews) and [Sanyam Kapoor](https://github.com/activatedgeek) for providing us with  [dataset_2](https://github.com/activatedgeek/winemag-dataset).
  
-The data we used is available at: [https://github.com/C4rbyn3m4n/wine_reviews_data_analysis/tree/master/data]("https://github.com/C4rbyn3m4n/wine_reviews_data_analysis/tree/master/data")
+The data we used is available at: [https://github.com/C4rbyn3m4n/wine_reviews_data_analysis/tree/master/data](https://github.com/C4rbyn3m4n/wine_reviews_data_analysis/tree/master/data)
