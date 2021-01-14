@@ -1,5 +1,6 @@
 ---
 title: "Exploring and Analyizing Wine Enthusiast Reviews"
+author: "Isabel Zimmerman - Vamsi Hanumanthu - Osaki Pokima"
 output: 
   html_notebook:
     toc: true
