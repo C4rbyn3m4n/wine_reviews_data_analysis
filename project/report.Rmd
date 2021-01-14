@@ -1,12 +1,18 @@
 ---
 title: "Exploring and Analyizing Wine Enthusiast Reviews"
-author: "Isabel Zimmerman - Vamsi Hanumanthu - Osaki Pokima"
 output: 
   html_notebook:
     toc: true
     toc_float: true
     theme: united
 ---
+## Team members
+**Saivamsi Hanumanthu** <br> [Vamso the Extraordinaire](mailto:shanumanthu4016@floridapoly.edu) 
+
+**Osaki Pokima** <br> [**Saki-Saki**](mailto:student3@floridapoly.edu) 
+
+**Isabel Zimmerman** <br> [**Z Best**](mailto:izimmerman5298@floridapoly.edu)
+
 # Introduction
 Turning 21 is a milestone in everyone's life and usually, people celebrate it with a family dinner and glass of wine. But, how does one find the best wine considering that person has never had alcohol. 
 
