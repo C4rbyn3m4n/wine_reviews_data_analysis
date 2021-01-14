@@ -1,17 +1,20 @@
 ---
 title: "Exploring and Analyizing Wine Enthusiast Reviews"
-output: 
+output:
+  html_document:
+    toc: yes
+    df_print: paged
   html_notebook:
-    toc: true
-    toc_float: true
+    toc: yes
+    toc_float: yes
     theme: united
 ---
 ## Team members
 **Saivamsi Hanumanthu** <br> [Vamso the Extraordinaire](mailto:shanumanthu4016@floridapoly.edu) 
 
-**Osaki Pokima** <br> [**Saki-Saki**](mailto:student3@floridapoly.edu) 
+**Osaki Pokima** <br> [Saki-Saki](mailto:student3@floridapoly.edu) 
 
-**Isabel Zimmerman** <br> [**Z Best**](mailto:izimmerman5298@floridapoly.edu)
+**Isabel Zimmerman** <br> [Z Best](mailto:izimmerman5298@floridapoly.edu)
 
 # Introduction
 Turning 21 is a milestone in everyone's life and usually, people celebrate it with a family dinner and glass of wine. But, how does one find the best wine considering that person has never had alcohol. 
@@ -304,7 +307,7 @@ wines %>%
 ```
 
 ###  Points 
-Next, we wanted to visualize the distribution of points in our dataset. Notice, here that a majority of wines receive a score between 87 and 90. Which is accurate to the information provided on [Wine Searcher]("https://www.wine-searcher.com/critics-17-wine+enthusiast"), which states 50% of the scores fall between 86-90 point from Wine Enthusiast ratings.
+Next, we wanted to visualize the distribution of points in our dataset. Notice, here that a majority of wines receive a score between 87 and 90. Which is accurate to the information provided on [Wine Searcher](https://www.wine-searcher.com/critics-17-wine+enthusiast), which states 50% of the scores fall between 86-90 point from Wine Enthusiast ratings.
 
 (Note: We our dataset was reterived from the Wine Enthusiast website)
 ```{r}
@@ -312,7 +315,7 @@ wines %>%
   ggplot() +
   geom_histogram(
     mapping = aes(x=points),
-    bins = 20)+
+    bins = 20) +
   labs(
     title = "Distribution of Points",
     x = "Points", 
