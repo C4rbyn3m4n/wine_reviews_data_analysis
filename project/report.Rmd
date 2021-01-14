@@ -37,7 +37,7 @@ library(scales)
 
 # Dataset
 
-Import processed data, which can be found [here](processed_data/preprocessing.nb.html). Note: This file also credits our dataset curators and outlines our data cleaning pipeline.
+Import processed data, which can be found [here](https://rei-faves-wine-data-analysis.netlify.app/data/processed_data/preprocessing.nb.html). Note: This file also credits our dataset curators and outlines our data cleaning pipeline.
 
 ```{r}
 #read preprocessed data
