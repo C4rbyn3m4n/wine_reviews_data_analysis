@@ -37,7 +37,7 @@ library(scales)
 
 # Dataset
 
-Import processed data, which can be found [here](https://github.com/C4rbyn3m4n/wine_reviews_data_analysis/blob/master/data/processed_data/preprocessing.nb.html). Note: This file also credits our dataset curators and outlines our data cleaning pipeline.
+Import processed data, which can be found [here](processed_data/preprocessing.nb.html). Note: This file also credits our dataset curators and outlines our data cleaning pipeline.
 
 ```{r}
 #read preprocessed data
